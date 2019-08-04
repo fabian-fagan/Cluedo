@@ -35,6 +35,6 @@ public class Suggestion {
 	}
 	
 	public String toString() {
-		return character + " with " + weapon + " in " + room;
+		return character.getName() + " with " + weapon.getName() + " in " + room.getName();
 	}
 }
