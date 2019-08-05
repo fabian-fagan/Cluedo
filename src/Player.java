@@ -116,7 +116,6 @@ public class Player {
 						   this.setPos(cells.get(rowList + 1).get(col)); //move down					   
 						   cells.get(rowList + 1).get(col).addPlayer(this);
 						   cells.get(rowList).get(col).remPlayer(this);
-						   System.out.println(rowList + "," + col);
 						   moved = true;
 						   break;
 					   }
