@@ -39,4 +39,10 @@ public class Cell {
 	protected void remPlayer(Player p) {
 		this.player = null;
 	}
+	public Player getPlayer() {
+		if(player != null) {
+		return this.player;
+		}
+		else return null;
+	}
 }

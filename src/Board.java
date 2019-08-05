@@ -82,6 +82,7 @@ public class Board {
 		    try {
 		      // parse the board
 		      Scanner lineScan = new Scanner(new File("board.tab"));
+		     
 		      while (lineScan.hasNextLine()) {
 		        List<Cell> boardRow = new ArrayList<Cell>();
 		        for (String token : lineScan.nextLine().split("\t")) {
@@ -99,7 +100,7 @@ public class Board {
 		            	  newCell = new Cell('#');
 		            	  break;
 		              case 'P': // Player Spawn
-			              newCell = new Cell('#');
+			              newCell = new Cell('P');
 			              playerSpawns.put(spawnCount, newCell);
 			              ++spawnCount;
 			              break;
@@ -155,6 +156,8 @@ public class Board {
 		    
 	}
 	
+	
+	
 	public String toString() {
 		String ret = "";
 		for (List<Cell> row : cells) {
@@ -165,4 +168,13 @@ public class Board {
 		}
 		return ret;
 	}
+	
+	public List<List<Cell>> getCells() {
+		return cells;
+	}
+	
+	public void setCells(List<List<Cell>> c) {
+		this.cells = c;
+	}
+	
 }

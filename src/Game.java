@@ -71,6 +71,16 @@ public class Game {
 	    currentPlayer = players.get(0);
 	    currentPlayer.newTurn();
 	}
+	public Board getBoard() {
+		return board;
+	
+	}
+	
+	public void setBoard(Board b) {
+		board = b; 
+		
+		
+	}
 	
 	public static void main(String[] args) {
 		new Game();
