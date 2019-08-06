@@ -10,6 +10,7 @@ public class Player {
 	private List<Card> hand;
 	private Cell pos; // position on the board
 	private Game game;
+	private int roll;
 
 	public Player(String name, int pID, Game game) {
 		this.name = name;
@@ -60,7 +61,7 @@ public class Player {
 	public void newTurn() {
 
 		Dice dice = new Dice();
-		int roll = dice.roll();
+		this.roll = dice.roll();
 
 		Scanner sc = new Scanner(System.in);
 		for (int i = 0; i < roll; i++) {
@@ -128,6 +129,7 @@ public class Player {
 
 	public void moveUp() {
 		Board board = this.game.getBoard();
+		boolean out = false;
 		List<List<Cell>> cells = board.getCells();
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
 			List<Cell> row = cells.get(rowList);
@@ -135,11 +137,15 @@ public class Player {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
 						if (rowList != 0) { // if player is not on top row
-							this.setPos(cells.get(rowList - 1).get(col)); // move up
-							cells.get(rowList - 1).get(col).addPlayer(this);
-							cells.get(rowList).get(col).remPlayer(this);
+							if (cells.get(rowList - 1).get(col).isTraversable()) {
+								this.setPos(cells.get(rowList - 1).get(col)); // move up
+								cells.get(rowList - 1).get(col).addPlayer(this);
+								cells.get(rowList).get(col).remPlayer(this);
+							} else {
+								out = true; // cell is not traversable
+							}
 						} else {
-							System.out.println("Out of bounds.");
+							out = true;
 						}
 					}
 				}
@@ -147,11 +153,16 @@ public class Player {
 		}
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString()); // debug purposes
+		System.out.println(board.toString());
+		if (out == true) {
+			System.out.println("Out of bounds!");
+			this.roll = this.roll + 1;
+		}
 	}
 
 	public void moveDown() {
 		Board board = this.game.getBoard();
+		boolean out = false;
 		Boolean moved = false;
 		List<List<Cell>> cells = board.getCells();
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
@@ -166,9 +177,12 @@ public class Player {
 								cells.get(rowList).get(col).remPlayer(this);
 								moved = true;
 								break;
+							} else {
+								out = true; // cell is not traversable
 							}
 						} else if (moved == false) {
-							System.out.println("Out of bounds.");
+							out = true;
+
 						}
 					}
 				}
@@ -176,11 +190,16 @@ public class Player {
 		}
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString()); // debug purposes
+		System.out.println(board.toString());
+		if (out == true) {
+			System.out.println("Out of bounds!");
+			this.roll = this.roll + 1;
+		}
 	}
 
 	public void moveLeft() {
 		Board board = this.game.getBoard();
+		boolean out = false;
 
 		List<List<Cell>> cells = board.getCells();
 		/**
@@ -199,9 +218,11 @@ public class Player {
 								cells.get(rowList).get(col - 1).addPlayer(this);
 								cells.get(rowList).get(col).remPlayer(this);
 								break;
+							} else {
+								out = true; // cell is not traversable
 							}
 						} else {
-							System.out.println("Out of bounds.");
+							out = true;
 						}
 					}
 				}
@@ -210,11 +231,16 @@ public class Player {
 
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString()); // debug purposes
+		System.out.println(board.toString());
+		if (out == true) {
+			System.out.println("Out of bounds!");
+			this.roll = this.roll + 1;
+		}
 	}
 
 	public void moveRight() {
 		Board board = this.game.getBoard();
+		boolean out = false;
 		List<List<Cell>> cells = board.getCells();
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
 			List<Cell> row = cells.get(rowList);
@@ -222,13 +248,16 @@ public class Player {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
 						if (col != row.size() - 1) { // if player is not right edge
-						  if (cells.get(rowList).get(col + 1).isTraversable()) {
-							this.setPos(cells.get(rowList).get(col + 1)); // move right
-							cells.get(rowList).get(col + 1).addPlayer(this);
-							cells.get(rowList).get(col).remPlayer(this);
-							break;
-						}} else {
-							System.out.println("Out of bounds.");
+							if (cells.get(rowList).get(col + 1).isTraversable()) {
+								this.setPos(cells.get(rowList).get(col + 1)); // move right
+								cells.get(rowList).get(col + 1).addPlayer(this);
+								cells.get(rowList).get(col).remPlayer(this);
+								break;
+							} else {
+								out = true; // cell is not traversable
+							}
+						} else {
+							out = true;
 						}
 					}
 				}
@@ -237,7 +266,11 @@ public class Player {
 
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString()); // debug purposes
+		System.out.println(board.toString());
+		if (out == true) {
+			System.out.println("Out of bounds!");
+			this.roll = this.roll + 1;
+		}
 	}
 
 	/*
