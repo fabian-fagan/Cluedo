@@ -102,12 +102,24 @@ public class Game {
 	 * a card then returns false else true
 	 * 
 	 */
-	public boolean checkRefute(Player prosecutor, Suggestion s) {
+	public boolean checkSuggestionRefute(Player prosecutor, Suggestion s) {
 		System.out.println("Checking refute");
 		for (Player p : players) {
-			if (p != prosecutor && p.canRefute(s))
+			if (p != prosecutor && p.canRefuteSuggestion(s))
 				return false;
 		}
+		System.out.println("No one can refute");
+		return true;
+	}
+	
+	public boolean checkAccusationRefute(Player prosecutor, Accusation s) {
+		System.out.println("Checking refute");
+		if (solution.toString().equals(s.toString())) { System.out.println("ye");}
+		for (Player p : players) {
+			if (p != prosecutor && p.canRefuteAccusation(s))			
+				return false;
+		}
+		
 		System.out.println("No one can refute");
 		return true;
 	}

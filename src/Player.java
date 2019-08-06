@@ -69,7 +69,7 @@ public class Player {
 				System.out.println(name + ": " + (roll - i)
 						+ " moves (W - Up, A - Left, S - Down, D - Right) or make a suggestion! (M)");
 			} else
-				System.out.println(name + ": " + (roll - i) + " moves (W - Up, A - Left, S - Down, D - Right)");
+				System.out.println(name + ": " + (roll - i) + " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
 			String input = sc.next(); // changed to input
 			if (input.equalsIgnoreCase("W")) {
 				moveUp();
@@ -85,6 +85,11 @@ public class Player {
 
 			if (input.equalsIgnoreCase("D")) {
 				moveRight();
+			}
+			
+			if (input.equalsIgnoreCase("K")) {
+				makeAccusation();
+				
 			}
 			if (input.equalsIgnoreCase("M")) {
 				if (inRoom()) {
@@ -106,6 +111,8 @@ public class Player {
 				makeSuggestion();
 			}
 		}
+		
+		
 	}
 
 	public boolean inRoom() {
@@ -300,12 +307,46 @@ public class Player {
 			return makeSuggestion();
 		if (next.equalsIgnoreCase("Y")) {
 			Suggestion s = new Suggestion(murderer, murderWeapon, pos.getRoom());
-			game.checkRefute(this, s);
+			game.checkSuggestionRefute(this, s);
+		}
+		return false;
+	}
+	
+	public boolean makeAccusation() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Who are you accusing of murder? Enter the number");
+		List<PCharacter> chars = Board.characters;
+		for (int i = 0; i < chars.size(); i++) {
+			System.out.println(i + ": " + chars.get(i).getName());
+		}
+		int m = sc.nextInt();
+		System.out.println("What did the murderer use?");
+		List<Weapon> weapons = Board.weapons;
+		for (int i = 0; i < weapons.size(); i++) {
+			System.out.println(i + ": " + weapons.get(i).getName());
+		}
+		int n = sc.nextInt();
+        System.out.println("What room did the murder take place in?");
+        List<Room> rooms = Board.rooms;
+        for (int i = 0; i < rooms.size(); i++) {
+			System.out.println(i + ": " + rooms.get(i).getName());
+		}
+        int w = sc.nextInt();
+        PCharacter murderer = chars.get(m);
+		Weapon murderWeapon = weapons.get(n);
+		Room murderRoom = rooms.get(w);
+		System.out.println("You chose: " + murderer.getName() + " with " + murderWeapon.getName() + " in the " + murderRoom.getName() + ", correct? (Y/N)");
+		String next = sc.next();
+		if (next.equalsIgnoreCase("N"))
+			return makeAccusation();
+		if (next.equalsIgnoreCase("Y")) {
+			Accusation s = new Accusation(murderer, murderWeapon, pos.getRoom());
+			game.checkAccusationRefute(this, s);
 		}
 		return false;
 	}
 
-	public boolean canRefute(Suggestion s) {
+	public boolean canRefuteSuggestion(Suggestion s) {
 		if (hand.contains(s.getCharacter())) {
 			System.out.println(name + " has " + s.getCharacter().getName());
 			return true;
@@ -316,6 +357,25 @@ public class Player {
 		}
 		if (hand.contains(s.getRoom())) {
 			System.out.println(name + " has " + s.getRoom().getName());
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean canRefuteAccusation(Accusation s) {
+		if (hand.contains(s.getCharacter())) {
+			System.out.println(name + " has " + s.getCharacter().getName());
+			System.out.println("You have been removed from the game!");
+			return true;
+		}
+		if (hand.contains(s.getWeapon())) {
+			System.out.println(name + " has " + s.getWeapon().getName());
+			System.out.println("You have been removed from the game!");
+			return true;
+		}
+		if (hand.contains(s.getRoom())) {
+			System.out.println(name + " has " + s.getRoom().getName());
+			System.out.println("You have been removed from the game!");
 			return true;
 		}
 		return false;
