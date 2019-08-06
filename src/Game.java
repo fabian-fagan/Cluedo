@@ -114,13 +114,12 @@ public class Game {
 	
 	public boolean checkAccusationRefute(Player prosecutor, Accusation s) {
 		System.out.println("Checking refute");
-		if (solution.toString().equals(s.toString())) { System.out.println("ye");}
 		for (Player p : players) {
 			if (p != prosecutor && p.canRefuteAccusation(s))			
 				return false;
 		}
 		
-		System.out.println("No one can refute");
+		System.out.println("No one can refute"); //does not check if they have guessed correctly yet
 		return true;
 	}
 
