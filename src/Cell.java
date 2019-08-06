@@ -2,19 +2,41 @@
 public class Cell {
 	private char name;
 	private Player player;
+	private Weapon weapon;
+	private Board board;
 	
-	public Cell(char name) {
+	public Cell(char name, Board b) {
 		this.name = name;
+		this.board = b;
 	}
 	
 	public Cell(Player pl, char name) {
 		this.player = pl;
 		this.name = name;
 	}
+	/*
+	 * use this to get the representation of the cell itself when a player is on it
+	 */
+	public char getCellName() {
+		return name;
+	}
 	
 	public char getName() {
-		if(player == null) return name;
-		else return player.getCharID();
+		if(player == null && weapon == null) return name;
+		if(player == null && weapon != null) return weapon.getID();
+		else return player.getPlayID();
+	}
+	
+	public Weapon getWeapon() {
+		return weapon;
+	}
+	
+	public void setWeapon(Weapon w) {
+		this.weapon = w;
+	}
+	
+	public Room getRoom() {
+		return board.getRoom(this);
 	}
 	
 	public boolean canMoveHere(Player p) {
@@ -27,7 +49,7 @@ public class Cell {
 		addPlayer(p);
 		return true;
 	}
-	
+
 	public boolean enter(Player p, Game game) {
 		return movePlayer(p);
 	}

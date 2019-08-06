@@ -6,4 +6,8 @@ public class Weapon extends Card {
 		// TODO Auto-generated constructor stub
 	}
 
+	public char getID() {
+		char c = this.getName().charAt(0);
+		return c;
+	}
 }
