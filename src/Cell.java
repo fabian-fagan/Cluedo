@@ -43,6 +43,14 @@ public class Cell {
 		if (p == player) return true; // player can stay in place
 		return player == null;
 	}
+	public Boolean isTraversable() {
+		if (name == '#' || name == '=') {
+			return true;
+		}
+		else return false;
+
+		
+	}
 	
 	protected boolean movePlayer(Player p) {
 		if (! canMoveHere(p)) return false;

@@ -95,6 +95,9 @@ public class Board {
 						case '#': // floor
 							newCell = new Cell('#', this);
 							break;
+						case '=': //door
+							 newCell = new Cell('=', this);
+							 break;
 						case 'P': // Player Spawn
 							newCell = new Cell('P', this);
 							playerSpawns.put(spawnCount, newCell);

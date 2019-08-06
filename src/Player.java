@@ -160,11 +160,13 @@ public class Player {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
 						if (rowList != cells.size() - 1 && moved == false) { // if player is not on bottom row
-							this.setPos(cells.get(rowList + 1).get(col)); // move down
-							cells.get(rowList + 1).get(col).addPlayer(this);
-							cells.get(rowList).get(col).remPlayer(this);
-							moved = true;
-							break;
+							if (cells.get(rowList + 1).get(col).isTraversable()) {
+								this.setPos(cells.get(rowList + 1).get(col)); // move down
+								cells.get(rowList + 1).get(col).addPlayer(this);
+								cells.get(rowList).get(col).remPlayer(this);
+								moved = true;
+								break;
+							}
 						} else if (moved == false) {
 							System.out.println("Out of bounds.");
 						}
@@ -179,17 +181,25 @@ public class Player {
 
 	public void moveLeft() {
 		Board board = this.game.getBoard();
+
 		List<List<Cell>> cells = board.getCells();
+		/**
+		 * for (List<Cell> c : cells ) { for (Cell s : c) { if (s.getPlayer() != null) {
+		 * System.out.println(s.getPlayer().toString()); } } }
+		 */ // debug (can't move player 3)
+
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
 			List<Cell> row = cells.get(rowList);
 			for (int col = 0; col < row.size() - 1; col++) {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
 						if (col != 0) { // if player is not left edge
-							this.setPos(cells.get(rowList).get(col - 1)); // move left
-							cells.get(rowList).get(col - 1).addPlayer(this);
-							cells.get(rowList).get(col).remPlayer(this);
-							break;
+							if (cells.get(rowList).get(col - 1).isTraversable()) {
+								this.setPos(cells.get(rowList).get(col - 1)); // move left
+								cells.get(rowList).get(col - 1).addPlayer(this);
+								cells.get(rowList).get(col).remPlayer(this);
+								break;
+							}
 						} else {
 							System.out.println("Out of bounds.");
 						}
@@ -212,11 +222,12 @@ public class Player {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
 						if (col != row.size() - 1) { // if player is not right edge
+						  if (cells.get(rowList).get(col + 1).isTraversable()) {
 							this.setPos(cells.get(rowList).get(col + 1)); // move right
 							cells.get(rowList).get(col + 1).addPlayer(this);
 							cells.get(rowList).get(col).remPlayer(this);
 							break;
-						} else {
+						}} else {
 							System.out.println("Out of bounds.");
 						}
 					}
