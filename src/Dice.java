@@ -1,5 +1,9 @@
 import java.util.Random;
 
+/**
+ * Represents dice to give player their allocated turns
+ *
+ */
 public class Dice {
 	private final int MAX = 12; // maximum face value of two 6 sided dice
 	private int roll;

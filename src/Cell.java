@@ -9,6 +9,10 @@ public class Cell {
 	private Weapon weapon;
 	private Board board;
 	
+	/**
+	 * @param name
+	 * @param b
+	 */
 	public Cell(char name, Board b) {
 		this.name = name;
 		this.board = b;
@@ -31,6 +35,9 @@ public class Cell {
 		else return player.getPlayID();
 	}
 	
+	/**
+	 * @return
+	 */
 	public Weapon getWeapon() {
 		return weapon;
 	}
@@ -39,10 +46,17 @@ public class Cell {
 		this.weapon = w;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Room getRoom() {
 		return board.getRoom(this);
 	}
 	
+	/**
+	 * @param p
+	 * @return
+	 */
 	public boolean canMoveHere(Player p) {
 		if (p == player) return true; // player can stay in place
 		return player == null;

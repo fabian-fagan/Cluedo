@@ -1,4 +1,8 @@
 
+/**
+ * Accusation class, represents a collection of cards that a player has assumed to be the murderer. 
+ *
+ */
 public class Accusation {
 	Card weapon, character, room;
 

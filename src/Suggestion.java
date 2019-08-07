@@ -1,4 +1,8 @@
 
+/**
+ * Suggestion class, represents a set of cards that a player is suggesting is the murderer. 
+ *
+ */
 public class Suggestion {
 	Card weapon, character, room;
 

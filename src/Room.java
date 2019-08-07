@@ -1,4 +1,8 @@
 
+/**
+ * Room card to be used in suggestions/accusations
+ *
+ */
 public class Room extends Card {
 
 	public Room(String name) {

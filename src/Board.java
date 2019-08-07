@@ -172,6 +172,10 @@ public class Board {
 		}
 	}
 
+	/**
+	 * @param c
+	 * @return
+	 */
 	public Room getRoom(Cell c) {
 		char cname = c.getCellName();
 		return roomMap.get(cname);
@@ -188,14 +192,23 @@ public class Board {
 		return ret;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<Cell> getItemSpawn() {
 		return itemSpawn;
 	}
 
+	/**
+	 * @return
+	 */
 	public List<List<Cell>> getCells() {
 		return cells;
 	}
 
+	/**
+	 * @param c
+	 */
 	public void setCells(List<List<Cell>> c) {
 		this.cells = c;
 	}

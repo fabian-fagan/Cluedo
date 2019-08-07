@@ -80,7 +80,7 @@ public class Player {
 			} else
 				System.out.println(name + ": " + (roll - i)
 						+ " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
-			String input = sc.next(); // changed to input
+			String input = sc.next(); 
 			if (input.equalsIgnoreCase("W")) {
 				moveUp();
 			}
@@ -124,6 +124,9 @@ public class Player {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean inRoom() {
 		char posName = pos.getCellName();
 		if (posName == '#')
@@ -289,6 +292,9 @@ public class Player {
 	 * player can refute the suggestion.
 	 */
 
+	/**
+	 * @return
+	 */
 	public boolean makeSuggestion() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Who do you think could be the murderer? Enter the number");
@@ -319,7 +325,9 @@ public class Player {
 
 	/**
 	 * Makes accusation and calls checkRefute similar to make suggestion
+	 * @return
 	 */
+	
 	public boolean makeAccusation() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Who are you accusing of murder? Enter the number");
@@ -355,6 +363,10 @@ public class Player {
 		return false;
 	}
 
+	/**
+	 * @param s
+	 * @return
+	 */
 	public boolean canRefuteSuggestion(Suggestion s) {
 		if (hand.contains(s.getCharacter())) {
 			System.out.println(name + " has " + s.getCharacter().getName());
@@ -371,6 +383,10 @@ public class Player {
 		return false;
 	}
 
+	/**
+	 * @param s
+	 * @return
+	 */
 	public boolean canRefuteAccusation(Accusation s) {
 		if (hand.contains(s.getCharacter())) {
 			System.out.println(name + " has " + s.getCharacter().getName());
