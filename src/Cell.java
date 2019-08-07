@@ -1,4 +1,8 @@
 
+/**
+ * Individual cell objects in the board. Contains information on its player/weapon it contains or whether it is empty. 
+ *
+ */
 public class Cell {
 	private char name;
 	private Player player;
@@ -43,6 +47,9 @@ public class Cell {
 		if (p == player) return true; // player can stay in place
 		return player == null;
 	}
+	/**
+	 * checks if the cell is a room, door or part of the hallway
+	 */
 	public Boolean isTraversable() {
 		if (name == '#' || name == '=') {
 			return true;

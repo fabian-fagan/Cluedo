@@ -6,6 +6,10 @@ import java.util.Scanner;
 
 public class Player {
 	private String name;
+	/**
+	 * Player class, contains information on their hand, position and ID as well as
+	 * controls movement on the board.
+	 */
 	private int playerID;
 	private List<Card> hand;
 	private Cell pos; // position on the board
@@ -58,6 +62,11 @@ public class Player {
 		return s;
 	}
 
+	/**
+	 * Called on new turn, receives input from player for direction to move as well
+	 * as whether they want to make a suggestion/accusation. Loops equivalent to the
+	 * roll number that the player receives.
+	 */
 	public void newTurn() {
 
 		Dice dice = new Dice();
@@ -69,7 +78,8 @@ public class Player {
 				System.out.println(name + ": " + (roll - i)
 						+ " moves (W - Up, A - Left, S - Down, D - Right) or make a suggestion! (M)");
 			} else
-				System.out.println(name + ": " + (roll - i) + " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
+				System.out.println(name + ": " + (roll - i)
+						+ " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
 			String input = sc.next(); // changed to input
 			if (input.equalsIgnoreCase("W")) {
 				moveUp();
@@ -86,10 +96,10 @@ public class Player {
 			if (input.equalsIgnoreCase("D")) {
 				moveRight();
 			}
-			
+
 			if (input.equalsIgnoreCase("K")) {
 				makeAccusation();
-				
+
 			}
 			if (input.equalsIgnoreCase("M")) {
 				if (inRoom()) {
@@ -111,8 +121,7 @@ public class Player {
 				makeSuggestion();
 			}
 		}
-		
-		
+
 	}
 
 	public boolean inRoom() {
@@ -209,11 +218,6 @@ public class Player {
 		boolean out = false;
 
 		List<List<Cell>> cells = board.getCells();
-		/**
-		 * for (List<Cell> c : cells ) { for (Cell s : c) { if (s.getPlayer() != null) {
-		 * System.out.println(s.getPlayer().toString()); } } }
-		 */ // debug (can't move player 3)
-
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
 			List<Cell> row = cells.get(rowList);
 			for (int col = 0; col < row.size() - 1; col++) {
@@ -284,6 +288,7 @@ public class Player {
 	 * Makes a suggestion and then calls checkRefute which checks if any other
 	 * player can refute the suggestion.
 	 */
+
 	public boolean makeSuggestion() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Who do you think could be the murderer? Enter the number");
@@ -311,7 +316,10 @@ public class Player {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Makes accusation and calls checkRefute similar to make suggestion
+	 */
 	public boolean makeAccusation() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Who are you accusing of murder? Enter the number");
@@ -326,16 +334,17 @@ public class Player {
 			System.out.println(i + ": " + weapons.get(i).getName());
 		}
 		int n = sc.nextInt();
-        System.out.println("What room did the murder take place in?");
-        List<Room> rooms = Board.rooms;
-        for (int i = 0; i < rooms.size(); i++) {
+		System.out.println("What room did the murder take place in?");
+		List<Room> rooms = Board.rooms;
+		for (int i = 0; i < rooms.size(); i++) {
 			System.out.println(i + ": " + rooms.get(i).getName());
 		}
-        int w = sc.nextInt();
-        PCharacter murderer = chars.get(m);
+		int w = sc.nextInt();
+		PCharacter murderer = chars.get(m);
 		Weapon murderWeapon = weapons.get(n);
 		Room murderRoom = rooms.get(w);
-		System.out.println("You chose: " + murderer.getName() + " with " + murderWeapon.getName() + " in the " + murderRoom.getName() + ", correct? (Y/N)");
+		System.out.println("You chose: " + murderer.getName() + " with " + murderWeapon.getName() + " in the "
+				+ murderRoom.getName() + ", correct? (Y/N)");
 		String next = sc.next();
 		if (next.equalsIgnoreCase("N"))
 			return makeAccusation();
@@ -361,7 +370,7 @@ public class Player {
 		}
 		return false;
 	}
-	
+
 	public boolean canRefuteAccusation(Accusation s) {
 		if (hand.contains(s.getCharacter())) {
 			System.out.println(name + " has " + s.getCharacter().getName());

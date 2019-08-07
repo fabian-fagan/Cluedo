@@ -3,6 +3,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Game class, contains lists of players, weapons and cards as well as methods to check suggestions/accusation refutes.
+ * 
+ *
+ */
 public class Game {
 
 	/* =========== fields =========== */

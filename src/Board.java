@@ -8,8 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Board class, controls parsing of board and item spawns.
+ *
+ */
 public class Board {
 	Map<Integer, Cell> playerSpawns = new HashMap<Integer, Cell>();
+	
 	int spawnCount;
 	private Game game;
 	private List<List<Cell>> cells;
