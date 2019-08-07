@@ -72,7 +72,7 @@ public class Board {
 	/**
 	 * - = out of bounds K = kitchen A = ballroom C = conservatory B = billiard room
 	 * L = library S = study H = hall O = lounge D = dining room - = out of bounds #
-	 * = floor / = wall
+	 * = floor / = wall  "=" --- Door to room
 	 */
 	private void createBoard() {
 		itemSpawn = new ArrayList<Cell>();

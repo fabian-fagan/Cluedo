@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Game class, contains lists of players, weapons and cards as well as methods to check suggestions/accusation refutes.
+ * Game class, contains lists of players, weapons and cards as well as methods
+ * to check suggestions/accusation refutes.
  * 
  *
  */
@@ -20,6 +22,7 @@ public class Game {
 	private List<Weapon> weapons, allWeapons;
 	private List<PCharacter> characters, allCharacters;
 	private List<Room> rooms;
+	private boolean finished = false;
 
 	public Game() {
 		board = new Board();
@@ -99,7 +102,9 @@ public class Game {
 				p++;
 			}
 			p = 0;
+
 		}
+
 	}
 
 	/*
@@ -116,16 +121,23 @@ public class Game {
 		System.out.println("No one can refute");
 		return true;
 	}
-	
+
 	public boolean checkAccusationRefute(Player prosecutor, Accusation s) {
 		System.out.println("Checking refute");
 		for (Player p : players) {
-			if (p != prosecutor && p.canRefuteAccusation(s))			
+			if (p != prosecutor && p.canRefuteAccusation(s))
 				return false;
 		}
-		
-		System.out.println("No one can refute"); //does not check if they have guessed correctly yet
-		return true;
+
+		System.out.println("No one can refute"); // does not check if they have guessed correctly yet
+		System.out.println("You win!!");	
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.exit(0);
+      	return true;
 	}
 
 	public Board getBoard() {
@@ -157,4 +169,6 @@ public class Game {
 	public static void main(String[] args) {
 		new Game();
 	}
+
+
 }
