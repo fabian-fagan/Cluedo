@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +14,7 @@ import java.util.Scanner;
  * Board class, controls parsing of board and item spawns.
  *
  */
-public class Board {
+public class Board extends JPanel {
 	Map<Integer, Cell> playerSpawns = new HashMap<Integer, Cell>();
 	
 	int spawnCount;
@@ -22,6 +24,10 @@ public class Board {
 	private List<Cell> itemSpawn;
 	private Map<Room, List<Cell>> cellRoom;
 	private Map<Character, Room> roomMap;
+	private final int boardWidth = 24;
+	private final int boardHeight = 25;
+	private int cellWidth;
+	private int cellHeight;
 
 	public static final List<Weapon> weapons = new ArrayList<Weapon>();
 	static {
@@ -64,7 +70,8 @@ public class Board {
 		Collections.shuffle(cards);
 	}
 
-	public Board() {
+	public Board(Game game) {
+		this.game = game;
 		createBoard();
 		System.out.println(this.toString());
 	}
@@ -98,7 +105,7 @@ public class Board {
 							newCell = new Cell('-', this);
 							break;
 						case '#': // floor
-							newCell = new Cell('#', this);
+							newCell = new FloorCell('#', this);
 							break;
 						case '=': //door
 							 newCell = new Cell('=', this);
@@ -145,7 +152,7 @@ public class Board {
 							}
 							Room newRoom = new Room(roomName);
 							roomMap.put(roomID, newRoom);
-							newCell = new Cell(roomID, this);
+							newCell = new RoomCell(roomID, this);
 							addToRoom(newCell, roomName);
 							if (roomName == "Item Spawn")
 								itemSpawn.add(newCell);
@@ -162,6 +169,23 @@ public class Board {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	protected void paintComponent(Graphics g){
+		super.paintComponent(g);
+
+		cellWidth = getWidth() / boardHeight;
+		cellHeight = (getHeight() - 200) / boardHeight;
+		paintBoard(g);
+	}
+
+	private void paintBoard(Graphics g){
+		for (int x = 0; x < boardWidth; x++){
+			for (int y = 0; y < boardHeight; y++){
+				this.cells.get(x).get(y).draw(g, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+			}
+		}
+
 	}
 
 	private void addToRoom(Cell c, String name) {
@@ -185,7 +209,7 @@ public class Board {
 		String ret = "";
 		for (List<Cell> row : cells) {
 			for (Cell c : row) {
-				ret += c.getName();
+				ret += c.name();
 			}
 			ret += '\n';
 		}
