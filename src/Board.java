@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -180,12 +182,18 @@ public class Board extends JPanel {
 	}
 
 	private void paintBoard(Graphics g){
-		for (int x = 0; x < boardWidth; x++){
-			for (int y = 0; y < boardHeight; y++){
+		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++){
+			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++){
 				this.cells.get(x).get(y).draw(g, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
 			}
 		}
 
+	}
+	
+	
+	public void redraw() {
+		repaint();
+		
 	}
 
 	private void addToRoom(Cell c, String name) {

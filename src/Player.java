@@ -246,6 +246,8 @@ public class Player {
 		board.setCells(cells);
 		game.setBoard(board); // set new board
 		System.out.println(board.toString());
+		
+		System.out.println(board.toString());
 		if (out == true) {
 			System.out.println("Out of bounds!");
 			this.roll = this.roll + 1;

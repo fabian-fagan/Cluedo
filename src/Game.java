@@ -1,6 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +31,11 @@ public class Game extends JFrame implements Display{
     private boolean finished = false;
     private JPanel p;
     private Cell[][] cells;
+    JMenuBar menuBar;
+    JMenu help, settings;
+    JMenuItem exit, restart;
+    JRadioButtonMenuItem rbMenuItem;
+    JCheckBoxMenuItem cbMenuItem;
 
     private Game() throws IOException {
         super("Cluedo");
@@ -44,9 +53,25 @@ public class Game extends JFrame implements Display{
         setMinimumSize(this.getSize());//get screen size as java Dimension
         //set preferred size as new height and width
         setVisible(true);
+       
+        //initialize menu bar
+        menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+        settings = new JMenu("Settings");
+        menuBar.add(settings);
+        help = new JMenu("Help");
+        menuBar.add(help);
+        exit = new JMenuItem("Exit");
+        restart = new JMenuItem("Restart");
+        settings.add(exit);
+        settings.add(restart);
+        exit.addActionListener(new ActionListener() {  public void actionPerformed(ActionEvent arg0) {
+            System.exit(0);
+          }});
 
+        
+        
         board = new Board(this);
-
         getContentPane().add(board, BorderLayout.CENTER);
 
         cells = new Cell[24][25];
@@ -79,6 +104,7 @@ public class Game extends JFrame implements Display{
             System.out.println("How many players? (3-6)");
             playerCount = sc.nextInt();
             System.out.println("Amount of players chosen: " + playerCount);
+            board.redraw();
         }
         for (int i = 0; i < playerCount; i++) {
             players.add(new Player(Board.characters.get(i).getName(), i, this));
@@ -174,6 +200,7 @@ public class Game extends JFrame implements Display{
 
     public void setBoard(Board b) {
         board = b;
+        board.redraw();
 
     }
 

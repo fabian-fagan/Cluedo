@@ -9,9 +9,22 @@ public class FloorCell extends Cell implements Drawable {
 
     @Override
     public void draw(Graphics g, int x, int y, int width, int height) {
-        g.setColor(Color.blue);
+    	if (name == '-') {
+			g.setColor(Color.BLACK);
+			g.fillRect(x, y, width, height);
+		}
+    	if (getPlayer() != null) {
+			g.setColor(Color.RED);
+			g.fillRect(x, y, width, height);
+
+		}
+    	
+    	else {
+    	g.setColor(Color.blue);
         g.fillRect(x, y, width, height);
         g.setColor(Color.black);
         g.drawRect(x, y, width-1, height-1);
+
+    	}
     }
 }

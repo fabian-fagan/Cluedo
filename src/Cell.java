@@ -6,12 +6,13 @@ import java.awt.*;
  *
  */
 public class Cell {
-	private char name;
+	public char name;
 	private Player player;
 	private Weapon weapon;
 	private Board board;
 	static int width;
 	static int height;
+	
 	
 	/**
 	 * @param name
@@ -22,8 +23,8 @@ public class Cell {
 		this.name = name;
 		this.board = b;
 		// hardcoding width and height for now
-		int width = 25;
-		int height = 24;
+		int width = 24;
+		int height = 25;
 	}
 	
 	public Cell(Player pl, char name) {
@@ -76,8 +77,29 @@ public class Cell {
 	 * draw this cell on the given graphics pane
 	 */
 	public void draw(Graphics g, int x, int y, int width, int height){
-		g.setColor(Color.BLACK);
+		
+		
+		if (name == '=') {
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.black);
+	        g.drawRect(x, y, width-1, height-1);
+		}
+		
+		else {
+		g.setColor(Color.GRAY);
 		g.fillRect(x, y, width, height);
+		}
+		
+		if (getPlayer() != null) {
+			g.setColor(Color.RED);
+			g.fillRect(x, y, width, height);
+
+		}
+		if (name == '-') {
+			g.setColor(Color.BLACK);
+			g.fillRect(x, y, width, height);
+		}
 	}
 
 	/**
