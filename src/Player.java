@@ -94,7 +94,7 @@ public class Player {
 			}
 
 			if (input.equalsIgnoreCase("D")) {
-				moveRight();
+				moveRight(); 
 			}
 
 			if (input.equalsIgnoreCase("K")) {
@@ -106,7 +106,7 @@ public class Player {
 					makeSuggestion();
 					i = roll; // end turn
 				} else
-					System.out.println("You are not in a room");
+					System.out.println("You are not in a room ");
 			}
 			if (input.equalsIgnoreCase("E")) { // end turn
 				i = roll;
