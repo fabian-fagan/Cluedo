@@ -10,4 +10,6 @@ public class Weapon extends Card {
 		char c = this.getName().charAt(0);
 		return c;
 	}
+	
+	
 }

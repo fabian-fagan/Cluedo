@@ -167,6 +167,33 @@ public class Board extends JPanel {
 				}
 				cells.add(boardRow);
 			}
+			for (int i = 0; i < itemSpawn.size() - 1; i++) {
+				if (i == 0) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+				if (i == 1) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+				if (i == 2) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+				if (i == 3) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+				if (i == 4) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+				if (i == 5) {
+					itemSpawn.get(i).setWeapon(weapons.get(i)); 
+					
+				}
+
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -176,15 +203,17 @@ public class Board extends JPanel {
 	protected void paintComponent(Graphics g){
 		super.paintComponent(g);
 
-		cellWidth = getWidth() / boardHeight;
+		cellWidth = getWidth() / boardWidth;
 		cellHeight = (getHeight() - 200) / boardHeight;
 		paintBoard(g);
 	}
 
 	private void paintBoard(Graphics g){
+		
+		
 		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++){
 			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++){
-				this.cells.get(x).get(y).draw(g, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+				this.cells.get(y).get(x).draw(g, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
 			}
 		}
 
@@ -244,5 +273,6 @@ public class Board extends JPanel {
 	public void setCells(List<List<Cell>> c) {
 		this.cells = c;
 	}
+	
 
 }

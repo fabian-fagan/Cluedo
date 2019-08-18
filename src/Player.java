@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +81,7 @@ public class Player {
 			} else
 				System.out.println(name + ": " + (roll - i)
 						+ " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
-			String input = sc.next(); 
+			String input = sc.next();
 			if (input.equalsIgnoreCase("W")) {
 				moveUp();
 			}
@@ -94,7 +95,7 @@ public class Player {
 			}
 
 			if (input.equalsIgnoreCase("D")) {
-				moveRight(); 
+				moveRight();
 			}
 
 			if (input.equalsIgnoreCase("K")) {
@@ -246,7 +247,7 @@ public class Player {
 		board.setCells(cells);
 		game.setBoard(board); // set new board
 		System.out.println(board.toString());
-		
+
 		System.out.println(board.toString());
 		if (out == true) {
 			System.out.println("Out of bounds!");
@@ -327,9 +328,10 @@ public class Player {
 
 	/**
 	 * Makes accusation and calls checkRefute similar to make suggestion
+	 * 
 	 * @return
 	 */
-	
+
 	public boolean makeAccusation() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Who are you accusing of murder? Enter the number");
@@ -407,4 +409,5 @@ public class Player {
 		}
 		return false;
 	}
+
 }

@@ -20,11 +20,12 @@ public class FloorCell extends Cell implements Drawable {
 		}
     	
     	else {
-    	g.setColor(Color.blue);
+    	g.setColor(Color.YELLOW);
         g.fillRect(x, y, width, height);
         g.setColor(Color.black);
         g.drawRect(x, y, width-1, height-1);
 
     	}
+    	
     }
 }

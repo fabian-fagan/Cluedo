@@ -1,4 +1,4 @@
-import javax.swing.*;
+import javax.swing.*; 
 import javax.swing.border.EmptyBorder;
 
 
@@ -38,41 +38,10 @@ public class Game extends JFrame implements Display{
     JCheckBoxMenuItem cbMenuItem;
 
     private Game() throws IOException {
-        super("Cluedo");
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-        }
-        /*
-		initialise JFrame
-		 */
-        setBounds(100, 100, 820, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new BorderLayout(0, 0));
-        setResizable(true);
-        setMinimumSize(this.getSize());//get screen size as java Dimension
-        //set preferred size as new height and width
-        setVisible(true);
-       
-        //initialize menu bar
-        menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-        settings = new JMenu("Settings");
-        menuBar.add(settings);
-        help = new JMenu("Help");
-        menuBar.add(help);
-        exit = new JMenuItem("Exit");
-        restart = new JMenuItem("Restart");
-        settings.add(exit);
-        settings.add(restart);
-        exit.addActionListener(new ActionListener() {  public void actionPerformed(ActionEvent arg0) {
-            System.exit(0);
-          }});
-
         
-        
+        // Initialize board and GUI
         board = new Board(this);
-        getContentPane().add(board, BorderLayout.CENTER);
+        new GUI(board,this);
 
         cells = new Cell[24][25];
         playerID = 0;
