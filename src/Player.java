@@ -14,7 +14,7 @@ public class Player {
 	private int playerID;
 	private List<Card> hand;
 	private Cell pos; // position on the board
-	private Game game;
+	private Game game; 
 	private int roll;
 
 	public Player(String name, int pID, Game game) {

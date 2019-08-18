@@ -9,7 +9,7 @@ public class Weapon extends Card {
 	public char getID() {
 		char c = this.getName().charAt(0);
 		return c;
-	}
+	} 
 	
 	
 }

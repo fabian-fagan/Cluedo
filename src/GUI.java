@@ -47,7 +47,7 @@ public class GUI extends JFrame implements Display {
 		settings = new JMenu("Settings");
 		menuBar.add(settings);
 		help = new JMenu("Help");
-		menuBar.add(help);
+		menuBar.add(help); 
 		exit = new JMenuItem("Exit");
 		restart = new JMenuItem("Restart");
 		settings.add(exit);

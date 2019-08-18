@@ -74,7 +74,7 @@ public class Game extends JFrame implements Display{
             playerCount = sc.nextInt();
             System.out.println("Amount of players chosen: " + playerCount);
             board.redraw();
-        }
+        } 
         for (int i = 0; i < playerCount; i++) {
             players.add(new Player(Board.characters.get(i).getName(), i, this));
             System.out.println("Player " + (i + 1) + ": " + players.get(i).toString());

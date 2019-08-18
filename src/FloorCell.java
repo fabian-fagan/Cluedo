@@ -12,7 +12,7 @@ public class FloorCell extends Cell implements Drawable {
     	if (name == '-') {
 			g.setColor(Color.BLACK);
 			g.fillRect(x, y, width, height);
-		}
+		} 
     	if (getPlayer() != null) {
 			g.setColor(Color.RED);
 			g.fillRect(x, y, width, height);

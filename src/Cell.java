@@ -45,7 +45,7 @@ public class Cell {
 	 * @return cell representation
 	 */
 	public char getCellName() {
-		return name;
+		return name; 
 	}
 
 	public char name() {

@@ -13,7 +13,7 @@ public class MouseListener extends MouseAdapter {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-
+  
 		List<List<Cell>> cells = board.getCells();
 		System.out.println(e.getX() + " " + e.getY());
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for x,y position (by rows)

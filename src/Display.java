@@ -6,4 +6,4 @@ import java.util.List;
 public interface Display {
     public void showPlayerList(List<Player> players, Player currentPlayer);
     public void displayMessage(String message);
-}
+} 

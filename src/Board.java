@@ -29,7 +29,7 @@ public class Board extends JPanel {
 	private final int boardWidth = 24;
 	private final int boardHeight = 25;
 	private int cellWidth;
-	private int cellHeight;
+	private int cellHeight; 
 
 	public static final List<Weapon> weapons = new ArrayList<Weapon>();
 	static {
