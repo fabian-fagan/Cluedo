@@ -1,11 +1,12 @@
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Player {
+public class Player{
 	private String name;
 	/**
 	 * Player class, contains information on their hand, position and ID as well as
@@ -15,7 +16,7 @@ public class Player {
 	private List<Card> hand;
 	private Cell pos; // position on the board
 	private Game game; 
-	private int roll;
+	private int roll = 0;
 
 	public Player(String name, int pID, Game game) {
 		this.name = name;
@@ -28,7 +29,7 @@ public class Player {
 		return pos;
 	}
 
-	public void setPos(Cell pos) {
+	private void setPos(Cell pos) {
 		this.pos = pos;
 	}
 
@@ -43,6 +44,8 @@ public class Player {
 	public char getInit() {
 		return name.charAt(0);
 	}
+
+	public String getRollString() { return String.valueOf(this.roll); }
 
 	public void addToHand(Card c) {
 		if (c != null)
@@ -126,9 +129,9 @@ public class Player {
 	}
 
 	/**
-	 * @return
+	 * @return boolean true if in room
 	 */
-	public boolean inRoom() {
+	private boolean inRoom() {
 		char posName = pos.getCellName();
 		if (posName == '#')
 			return false;
@@ -147,7 +150,7 @@ public class Player {
 		spawnPos.enter(Player.this, null);
 	}
 
-	public void moveUp() {
+	private void moveUp() {
 		Board board = this.game.getBoard();
 		boolean out = false;
 		List<List<Cell>> cells = board.getCells();
@@ -174,23 +177,23 @@ public class Player {
 		board.setCells(cells);
 		game.setBoard(board); // set new board
 		System.out.println(board.toString());
-		if (out == true) {
+		if (out) {
 			System.out.println("Out of bounds!");
 			this.roll = this.roll + 1;
 		}
 	}
 
-	public void moveDown() {
+	private void moveDown() {
 		Board board = this.game.getBoard();
 		boolean out = false;
-		Boolean moved = false;
+		boolean moved = false;
 		List<List<Cell>> cells = board.getCells();
 		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for player position (by rows)
 			List<Cell> row = cells.get(rowList);
 			for (int col = 0; col < row.size() - 1; col++) {
 				if (row.get(col).getPlayer() != null) {
 					if (row.get(col).getPlayer().toString().equals(name)) { // if cell contains player
-						if (rowList != cells.size() - 1 && moved == false) { // if player is not on bottom row
+						if (rowList != cells.size() - 1 && !moved) { // if player is not on bottom row
 							if (cells.get(rowList + 1).get(col).isTraversable()) {
 								this.setPos(cells.get(rowList + 1).get(col)); // move down
 								cells.get(rowList + 1).get(col).addPlayer(this);
@@ -200,7 +203,7 @@ public class Player {
 							} else {
 								out = true; // cell is not traversable
 							}
-						} else if (moved == false) {
+						} else if (!moved) {
 							out = true;
 
 						}
@@ -211,13 +214,13 @@ public class Player {
 		board.setCells(cells);
 		game.setBoard(board); // set new board
 		System.out.println(board.toString());
-		if (out == true) {
+		if (out) {
 			System.out.println("Out of bounds!");
 			this.roll = this.roll + 1;
 		}
 	}
 
-	public void moveLeft() {
+	private void moveLeft() {
 		Board board = this.game.getBoard();
 		boolean out = false;
 
@@ -249,13 +252,13 @@ public class Player {
 		System.out.println(board.toString());
 
 		System.out.println(board.toString());
-		if (out == true) {
+		if (out) {
 			System.out.println("Out of bounds!");
 			this.roll = this.roll + 1;
 		}
 	}
 
-	public void moveRight() {
+	private void moveRight() {
 		Board board = this.game.getBoard();
 		boolean out = false;
 		List<List<Cell>> cells = board.getCells();
@@ -284,7 +287,7 @@ public class Player {
 		board.setCells(cells);
 		game.setBoard(board); // set new board
 		System.out.println(board.toString());
-		if (out == true) {
+		if (out) {
 			System.out.println("Out of bounds!");
 			this.roll = this.roll + 1;
 		}
@@ -298,30 +301,40 @@ public class Player {
 	/**
 	 * @return
 	 */
-	public boolean makeSuggestion() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Who do you think could be the murderer? Enter the number");
-		List<PCharacter> chars = Board.characters;
-		for (int i = 0; i < chars.size(); i++) {
-			System.out.println(i + ": " + chars.get(i).getName());
-		}
-		int m = sc.nextInt();
-		System.out.println("What did the murderer use?");
-		List<Weapon> weapons = Board.weapons;
-		for (int i = 0; i < weapons.size(); i++) {
-			System.out.println(i + ": " + weapons.get(i).getName());
-		}
-		int n = sc.nextInt();
-		PCharacter murderer = chars.get(m);
-		Weapon murderWeapon = weapons.get(n);
 
-		System.out.println("You chose: " + murderer.getName() + " with " + murderWeapon.getName() + ", correct? (Y/N)");
-		String next = sc.next();
-		if (next.equalsIgnoreCase("N"))
-			return makeSuggestion();
-		if (next.equalsIgnoreCase("Y")) {
-			Suggestion s = new Suggestion(murderer, murderWeapon, pos.getRoom());
-			game.checkSuggestionRefute(this, s);
+	boolean makeSuggestion() {
+		if(inRoom()) {
+			// Ask for murderer
+			List<PCharacter> chars = Board.characters;
+			// convert to array of the names
+			String[] charStringArray = new String[chars.size()];
+			for (int i = 0; i < chars.size(); i++) {
+				charStringArray[i] = chars.get(i).getName();
+			}
+			int c = JOptionPane.showOptionDialog(null, "Who do you think could be the murderer?",
+					"", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, charStringArray, charStringArray[0]);
+			PCharacter murderer = chars.get(c);
+			// Ask for weapon
+			List<Weapon> weapons = Board.weapons;
+			String[] weapStringArray = new String[weapons.size()];
+			for (int i = 0; i < weapons.size(); i++) {
+				weapStringArray[i] = weapons.get(i).getName();
+			}
+			int w = JOptionPane.showOptionDialog(null, "What weapon did the murderer use?",
+					"", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, weapStringArray, weapStringArray[0]);
+			Weapon weapon = weapons.get(w);
+
+			int dialogButton = JOptionPane.YES_NO_CANCEL_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog(null, "You chose: " + murderer.getName() + " with " + weapon.getName() + ", correct?", "Your suggestion", dialogButton);
+			if (dialogResult == JOptionPane.NO_OPTION) {
+				return makeSuggestion();
+			}
+			if (dialogResult == JOptionPane.YES_OPTION) {
+				Suggestion s = new Suggestion(murderer, weapon, pos.getRoom());
+				game.checkSuggestionRefute(this, s);
+			}
+		} else {
+			game.displayMessage("You are not in a room");
 		}
 		return false;
 	}

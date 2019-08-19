@@ -28,9 +28,10 @@ public class Game extends JFrame implements Display{
     private List<Weapon> weapons, allWeapons;
     private List<PCharacter> characters, allCharacters;
     private List<Room> rooms;
-    private boolean finished = false;
+    private boolean finished;
     private JPanel p;
     private Cell[][] cells;
+    private GUI gui;
     JMenuBar menuBar;
     JMenu help, settings;
     JMenuItem exit, restart;
@@ -41,7 +42,7 @@ public class Game extends JFrame implements Display{
         
         // Initialize board and GUI
         board = new Board(this);
-        new GUI(board,this);
+        gui = new GUI(board,this);
 
         cells = new Cell[24][25];
         playerID = 0;
@@ -60,25 +61,27 @@ public class Game extends JFrame implements Display{
         Collections.shuffle(characters);
 
         solution = new Suggestion(weapons.remove(0), characters.remove(0), rooms.remove(0));
-        System.out.println(solution.toString());
+        displayMessage("Solution: " + solution.toString()); // debug purposes
         List<Card> cardsLeft = new ArrayList<Card>();
         cardsLeft.addAll(weapons);
         cardsLeft.addAll(characters);
         cardsLeft.addAll(rooms);
 
-
-        playerCount = 0;
-        while (playerCount < 3) {
+        /*while (playerCount < 3) {
             Scanner sc = new Scanner(System.in);
             System.out.println("How many players? (3-6)");
             playerCount = sc.nextInt();
             System.out.println("Amount of players chosen: " + playerCount);
             board.redraw();
-        } 
+        } */
+
+        String pString = "";
         for (int i = 0; i < playerCount; i++) {
             players.add(new Player(Board.characters.get(i).getName(), i, this));
-            System.out.println("Player " + (i + 1) + ": " + players.get(i).toString());
+            pString = pString + "Player " + (i + 1) + ": " + players.get(i).toString() + '\n';
         }
+        displayMessage(pString);
+
 
         // Deal the cards
         Collections.shuffle(cardsLeft);
@@ -102,8 +105,6 @@ public class Game extends JFrame implements Display{
         for (Card c : cardsLeft)
             System.out.println(c.getName());
 
-        // debugging purposes, check the hand of the first player
-        System.out.println(players.get(0).printHand());
         // spawn players
         for (int i = 0; i < playerCount; ++i)
             players.get(i).spawn(board.playerSpawns.get(i));
@@ -119,6 +120,7 @@ public class Game extends JFrame implements Display{
         while (true) {
             while (p < playerCount) {
                 currentPlayer = players.get(p);
+                displayMessage(currentPlayer.toString() + ", it's your turn!");
                 currentPlayer.newTurn();
                 p++;
             }
@@ -139,7 +141,7 @@ public class Game extends JFrame implements Display{
             if (p != prosecutor && p.canRefuteSuggestion(s))
                 return false;
         }
-        System.out.println("No one can refute");
+        displayMessage("No one can refute");
         return true;
     }
 
@@ -149,9 +151,8 @@ public class Game extends JFrame implements Display{
             if (p != prosecutor && p.canRefuteAccusation(s))
                 return false;
         }
-
-        System.out.println("No one can refute"); // does not check if they have guessed correctly yet
-        System.out.println("You win!!");
+        displayMessage("No one can refute"); // does not check if they have guessed correctly yet
+        displayMessage("You win!!");
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
@@ -171,6 +172,14 @@ public class Game extends JFrame implements Display{
         board = b;
         board.redraw();
 
+    }
+
+    public void setPlayerCount(int pc){
+        this.playerCount = pc;
+    }
+
+    public Player getCurrentPlayer(){
+        return this.currentPlayer;
     }
 
     public List<PCharacter> getChars() {
@@ -205,6 +214,6 @@ public class Game extends JFrame implements Display{
 
     @Override
     public void displayMessage(String message) {
-
+        JOptionPane.showMessageDialog(null, message);
     }
 }

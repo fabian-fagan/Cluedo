@@ -21,12 +21,13 @@ public class GUI extends JFrame implements Display {
 	private Board board;
 	private Game game;
 
-	public GUI(Board b, Game g) throws IOException {
+	public GUI(Board b, Game g) {
 		super("Cluedo");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
 		}
 		this.board = b;
 		this.game = g;
@@ -57,9 +58,27 @@ public class GUI extends JFrame implements Display {
 				System.exit(0);
 			}
 		});
+		JButton showHand = new JButton("Show Hand");
+		showHand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				displayMessage(g.getCurrentPlayer().printHand());
+			}
+		});
+		menuBar.add(showHand);
+		JButton makeSuggestion = new JButton("Suggest");
+		makeSuggestion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent actionEvent) {
+				g.getCurrentPlayer().makeSuggestion();
+			}
+		});
+		menuBar.add(makeSuggestion);
 		getContentPane().add(board, BorderLayout.CENTER);
 		MouseListener m = new MouseListener(board, game);
 		addMouseListener(m);
+		// asks for amount of players and parses from String to Integer
+		String playerCount = JOptionPane.showInputDialog("How many players? (3-6)");
+		g.setPlayerCount(Integer.parseInt(playerCount));
+
 	}
 
 	@Override
@@ -69,7 +88,7 @@ public class GUI extends JFrame implements Display {
 
 	@Override
 	public void displayMessage(String message) {
-
+		JOptionPane.showMessageDialog(null, message);
 	}
 
 }
