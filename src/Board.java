@@ -1,7 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.Scanner;
  */
 public class Board extends JPanel {
 	Map<Integer, Cell> playerSpawns = new HashMap<Integer, Cell>();
-	
+
 	int spawnCount;
 	private Game game;
 	private List<List<Cell>> cells;
@@ -29,8 +32,9 @@ public class Board extends JPanel {
 	private final int boardWidth = 24;
 	private final int boardHeight = 25;
 	private int cellWidth;
-	private int cellHeight; 
-
+	private int cellHeight;
+	private BufferedImage image;
+	private BufferedImage image2;
 	public static final List<Weapon> weapons = new ArrayList<Weapon>();
 	static {
 		weapons.add(new Weapon("Candlestick"));
@@ -81,7 +85,7 @@ public class Board extends JPanel {
 	/**
 	 * - = out of bounds K = kitchen A = ballroom C = conservatory B = billiard room
 	 * L = library S = study H = hall O = lounge D = dining room - = out of bounds #
-	 * = floor / = wall  "=" --- Door to room
+	 * = floor / = wall "=" --- Door to room
 	 */
 	private void createBoard() {
 		itemSpawn = new ArrayList<Cell>();
@@ -109,9 +113,9 @@ public class Board extends JPanel {
 						case '#': // floor
 							newCell = new FloorCell('#', this);
 							break;
-						case '=': //door
-							 newCell = new Cell('=', this);
-							 break;
+						case '=': // door
+							newCell = new Cell('=', this);
+							break;
 						case 'P': // Player Spawn
 							newCell = new Cell('P', this);
 							playerSpawns.put(spawnCount, newCell);
@@ -167,62 +171,43 @@ public class Board extends JPanel {
 				}
 				cells.add(boardRow);
 			}
-			for (int i = 0; i < itemSpawn.size() - 1; i++) {
-				if (i == 0) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-				if (i == 1) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-				if (i == 2) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-				if (i == 3) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-				if (i == 4) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-				if (i == 5) {
-					itemSpawn.get(i).setWeapon(weapons.get(i)); 
-					
-				}
-
-			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void paintComponent(Graphics g){
+	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		cellWidth = getWidth() / boardWidth;
 		cellHeight = (getHeight() - 200) / boardHeight;
 		paintBoard(g);
+
+ 
 	}
 
-	private void paintBoard(Graphics g){
-		
-		
-		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++){
-			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++){
-				this.cells.get(y).get(x).draw(g, x*cellWidth, y*cellHeight, cellWidth, cellHeight);
+	private void paintBoard(Graphics g) {
+
+		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++) {
+			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++) {
+				this.cells.get(y).get(x).draw(g, x * cellWidth, y * cellHeight, cellWidth, cellHeight); // draw cell
+				this.cells.get(y).get(x).setX(x * cellWidth);
+				this.cells.get(y).get(x).setY(y * cellHeight);
+
+				Cell c = this.cells.get(y).get(x);
+
 			}
 		}
 
 	}
 	
 	
+	
+
 	public void redraw() {
 		repaint();
-		
+
 	}
 
 	private void addToRoom(Cell c, String name) {
@@ -274,5 +259,6 @@ public class Board extends JPanel {
 		this.cells = c;
 	}
 	
+
 
 }

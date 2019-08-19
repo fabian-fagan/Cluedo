@@ -5,6 +5,7 @@ import java.util.List;
 public class MouseListener extends MouseAdapter {
 	private Board board;
 	private Game game;
+	private Cell cell;
 
 	public MouseListener(Board b, Game g) {
 		this.board = b;
@@ -12,19 +13,43 @@ public class MouseListener extends MouseAdapter {
 
 	}
 
-	public void mouseClicked(MouseEvent e) {
-  
-		List<List<Cell>> cells = board.getCells();
-		System.out.println(e.getX() + " " + e.getY());
-		for (int rowList = 0; rowList < cells.size() - 1; rowList++) { // scans cells for x,y position (by rows)
-			List<Cell> row = cells.get(rowList);
-			for (int col = 0; col < row.size() - 1; col++) {
-				if ((row.get(col).getX() == e.getX()) && (row.get(col).getY() == e.getY())) {
-					System.out.println("found");
+	public MouseListener(Board b, Game g, Cell c) {
+		this.board = b;
+		this.game = g;
+		this.cell = c;
 
-				}
-			}   //feel free to delete this as I couldnt get it working (wanted it to move player if a cell is clicked on)
-		}
 	}
 
-}
+	public void mouseClicked(MouseEvent e) {
+
+		Player p = game.getCurrentPlayer();
+		Cell pCell = p.getPos();
+		List<List<Cell>> cells = board.getCells();
+		for (int rowList = 0; rowList < cells.size() - 1; rowList++) {
+			List<Cell> row = cells.get(rowList);
+			for (int col = 0; col < row.size() - 1; col++) {
+				if (row.get(col).getPlayer() != null) {
+					if (row.get(col).getPlayer().toString().equals(p.getName())) { // if cell contains player
+						if ((row.get(col).getX() > e.getX())) { // if mouse is clicked to the left of player
+							p.moveLeft();
+
+						}
+						if (row.get(col).getX() < e.getX() ) { // if mouse is clicked to the right of player
+							p.moveRight();
+
+						}
+						/**
+						if ((row.get(col).getY() > e.getY())) {
+							p.moveDown();
+						}
+						if ((row.get(col).getY() < e.getY())) {
+							p.moveUp();
+
+					} */  //need to fix this
+				}
+			}
+		}
+
+	}
+
+	}}

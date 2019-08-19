@@ -89,7 +89,6 @@ public class Cell {
 	public void draw(Graphics g, int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
-
 		if (name == '=') {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(x, y, width, height);
@@ -103,16 +102,39 @@ public class Cell {
 		}
 
 		if (getPlayer() != null) {
-			g.setColor(Color.RED);
-			g.fillRect(x, y, width, height);
+			Player p = getPlayer();
+			if (p.getName().equals("Mrs. White")) {
+				g.setColor(Color.WHITE);
+				g.fillRect(x, y, width, height);
+			}
+			if (p.getName().equals("Mr. Green")) {
+				g.setColor(Color.GREEN);
+				g.fillRect(x, y, width, height);
+			}
+			if (p.getName().equals("Mrs. Peacock")) {
+				g.setColor(Color.BLUE);
+				g.fillRect(x, y, width, height);
+			}
+			if (p.getName().equals("Prof. Plum")) {
+				g.setColor(Color.CYAN);
+				g.fillRect(x, y, width, height);
+			}
+			if (p.getName().equals("Miss Scarlett")) {
+				g.setColor(Color.RED);
+				g.fillRect(x, y, width, height);
+			}
+			if (p.getName().equals("Col. Mustard")) {
+				g.setColor(Color.PINK);
+				g.fillRect(x, y, width, height);
+			}
 
 		}
 		if (name == '-') {
-			g.setColor(Color.BLACK);
+			g.setColor(Color.ORANGE);
 			g.fillRect(x, y, width, height);
 		}
 		if (weapon != null) {
-			if (weapon.getName().contentEquals("Revolver")) {
+			if (weapon.getName().equals("Revolver")) {
 				try {
 					image = ImageIO.read(new File("revolver.png"));
 				} catch (IOException e) {
@@ -121,7 +143,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
-			if (weapon.getName().contentEquals("Rope")) {
+			if (weapon.getName().equals("Rope")) {
 				try {
 					image = ImageIO.read(new File("rope.png"));
 				} catch (IOException e) {
@@ -130,7 +152,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
-			if (weapon.getName().contentEquals("Dagger")) {
+			if (weapon.getName().equals("Dagger")) {
 				try {
 					image = ImageIO.read(new File("dagger.png"));
 				} catch (IOException e) {
@@ -139,7 +161,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
-			if (weapon.getName().contentEquals("Spanner")) {
+			if (weapon.getName().equals("Spanner")) {
 				try {
 					image = ImageIO.read(new File("spanner.png"));
 				} catch (IOException e) {
@@ -148,7 +170,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
-			if (weapon.getName().contentEquals("Candlestick")) {
+			if (weapon.getName().equals("Candlestick")) {
 				try {
 					image = ImageIO.read(new File("candlestick.png"));
 				} catch (IOException e) {
@@ -157,7 +179,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
-			if (weapon.getName().contentEquals("Lead Pipe")) {
+			if (weapon.getName().equals("Lead Pipe")) {
 				try {
 					image = ImageIO.read(new File("leadpipe.png"));
 				} catch (IOException e) {
@@ -166,6 +188,7 @@ public class Cell {
 				g.drawImage(image, x, y, width, height, new ImagePanel());
 
 			}
+
 
 		}
 	}
@@ -225,5 +248,19 @@ public class Cell {
 	public int getY() {
 		return this.y;
 	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+
+	
+
+	
+
 
 }

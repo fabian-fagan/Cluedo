@@ -37,6 +37,7 @@ public class Game extends JFrame implements Display{
     JMenuItem exit, restart;
     JRadioButtonMenuItem rbMenuItem;
     JCheckBoxMenuItem cbMenuItem;
+    public int pl;
 
     private Game() throws IOException {
         
