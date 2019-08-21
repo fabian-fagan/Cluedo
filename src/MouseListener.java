@@ -20,7 +20,7 @@ public class MouseListener extends MouseAdapter {
 
 	}
 
-	public void mouseClicked(MouseEvent e) {
+    	public void mouseClicked(MouseEvent e) {
 		Player p;
 		Cell pCell;
 		p = game.getCurrentPlayer();
@@ -44,6 +44,5 @@ public class MouseListener extends MouseAdapter {
 		} else if (mouseX == cellX && mouseY < cellY) {
 			p.moveUp();
 			p.hasMoved();
-		}
-	}
-}
+
+}}}
