@@ -2,8 +2,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +20,8 @@ public class GUI extends JFrame implements Display {
 	private JPanel p;
 	private Board board;
 	private Game game;
+	private PCharacter[] selectedChars;
+
 	public GUI(Board b, Game g) {
 		super("Cluedo");
 		try {
@@ -34,9 +35,9 @@ public class GUI extends JFrame implements Display {
 		/*
 		 * Initialize JFrame
 		 */
-		
+
 		setBounds(100, 100, 820, 800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0,0));
 		setResizable(false);
 		setMinimumSize(this.getSize());// get screen size as java Dimension
@@ -45,25 +46,30 @@ public class GUI extends JFrame implements Display {
 		p = new JPanel();
 		p.setPreferredSize( new Dimension(100, 30) );
 		p.setBackground(Color.CYAN);
-        add(p, BorderLayout.SOUTH);
-		
-        // initialize menu bar
+		add(p, BorderLayout.SOUTH);
+
+		// initialize menu bar
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		settings = new JMenu("Settings");
 		menuBar.add(settings);
 		help = new JMenu("Help");
-		menuBar.add(help); 
+		menuBar.add(help);
 		exit = new JMenuItem("Exit");
 		restart = new JMenuItem("Restart");
 		settings.add(exit);
 		settings.add(restart);
-		
-		exit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+		WindowListener listener = new WindowAdapter() {
+			public void windowClosing(WindowEvent w){
+				int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?",
+						"Exit", JOptionPane.YES_NO_OPTION, 1);
+				if(confirm == 0){
+					System.exit(0);
+				}
 			}
-		});
+		};
+		this.addWindowListener(listener);
+		exit.addActionListener(ae -> closeWindow());
 		JButton showHand = new JButton("Show Hand");
 		showHand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -89,18 +95,90 @@ public class GUI extends JFrame implements Display {
 		MouseListener m = new MouseListener(board,game);
 		addMouseListener(m);
 		// asks for amount of players and parses from String to Integer
-		String playerCount = JOptionPane.showInputDialog("How many players? (3-6)");
-		g.setPlayerCount(Integer.parseInt(playerCount));
-
+		askPlayers();
+		chooseNames();
 	}
 
-	public boolean newTurn(Player p){
-		int r = 1;
-		while(r > 0){
-			r = p.getRoll();
-			displayMessage(String.valueOf(r));
+	private void askPlayers() {
+		String playerCount = JOptionPane.showInputDialog("How many players? (3-6)");
+		try {
+			int pCount = Integer.parseInt(playerCount);
+			if (pCount != 3 && pCount != 4 && pCount != 5 && pCount != 6)
+				askPlayers();
+			game.setPlayerCount(pCount);
+		} catch (java.lang.NumberFormatException e){
+			game.displayMessage("Please enter a number in between 3 and 6 inclusive");
+			askPlayers();
 		}
-		return false;
+	}
+
+
+	private void chooseNames(){
+		ButtonGroup names = new ButtonGroup();
+		JRadioButton white = new JRadioButton("Mrs. White");
+		JRadioButton plum = new JRadioButton("Professor Plum");
+		JRadioButton scarlet = new JRadioButton("Miss Scarlet");
+		JRadioButton green = new JRadioButton("Mr. Green");
+		JRadioButton peacock = new JRadioButton("Mrs. Peacock");
+		JRadioButton mustard = new JRadioButton("Col. Mustard");
+		names.add(white);
+		names.add(plum);
+		names.add(scarlet);
+		names.add(green);
+		names.add(peacock);
+		names.add(mustard);
+		JPanel panel = new JPanel();
+		panel.add(white);
+		panel.add(plum);
+		panel.add(scarlet);
+		panel.add(green);
+		panel.add(peacock);
+		panel.add(mustard);
+		for(int i = 0; i<game.getPlayerCount(); i++) {
+			JOptionPane.showOptionDialog(null, panel,
+					"Player " + (i+1) + ", choose your character", JOptionPane.DEFAULT_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, null, null);
+			String n = null;
+
+			if(white.isSelected()) {
+				n = "Mrs. White";
+				panel.remove(white);
+			}
+			else if(plum.isSelected()) {
+				n = "Prof. Plum";
+				panel.remove(plum);
+			}
+			else if(scarlet.isSelected()) {
+				n = "Miss Scarlett";
+				panel.remove(scarlet);
+			}
+			else if(green.isSelected()) {
+				n = "Mr. Green";
+				panel.remove(green);
+			}
+			else if(peacock.isSelected()) {
+				n = "Mrs. Peacock";
+				panel.remove(peacock);
+			}
+			else if(mustard.isSelected()) {
+				n = "Col. Mustard";
+				panel.remove(mustard);
+			}
+			game.addPlayer(new Player(n, i, game));
+
+		}
+	}
+
+
+
+	public void closeWindow(){
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit", dialogButton);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
+			System.exit(0);
+		}
+
 	}
 
 	@Override
@@ -112,8 +190,8 @@ public class GUI extends JFrame implements Display {
 	public void displayMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
-	
-	
+
+
 
 
 }

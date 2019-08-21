@@ -39,6 +39,7 @@ public class Game extends JFrame implements Display{
 
         // Initialize board and GUI
         board = new Board(this);
+        players = new ArrayList<>();
         new GUI(board,this);
 
         cells = new Cell[24][25];
@@ -49,10 +50,9 @@ public class Game extends JFrame implements Display{
          * cards for testing purposes to see which is better
          */
 
-        players = new ArrayList<Player>();
-        weapons = new ArrayList<Weapon>(Board.weapons);
-        characters = new ArrayList<PCharacter>(Board.characters);
-        rooms = new ArrayList<Room>(Board.rooms);
+        weapons = new ArrayList<>(Board.weapons);
+        characters = new ArrayList<>(Board.characters);
+        rooms = new ArrayList<>(Board.rooms);
         Collections.shuffle(weapons);
         Collections.shuffle(rooms);
         Collections.shuffle(characters);
@@ -73,9 +73,8 @@ public class Game extends JFrame implements Display{
         } */
 
         String pString = "";
-        for (int i = 0; i < playerCount; i++) {
-            players.add(new Player(Board.characters.get(i).getName(), i, this));
-            pString = pString + "Player " + (i + 1) + ": " + players.get(i).toString() + '\n';
+        for(int i = 0; i<playerCount; i++){
+            pString = pString + "Player " + (i+1) + ": " + players.get(i).getName() + '\n';
         }
         displayMessage(pString);
 
@@ -188,6 +187,18 @@ public class Game extends JFrame implements Display{
 
     public List<PCharacter> getAllChars() {
         return allCharacters;
+    }
+
+    public List<Player> getPlayers(){
+        return this.players;
+    }
+
+    public void addPlayer(Player p){
+        players.add(p);
+    }
+
+    public int getPlayerCount(){
+        return playerCount;
     }
 
     public static void main(String[] args) {

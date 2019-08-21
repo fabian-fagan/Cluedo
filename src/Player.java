@@ -532,6 +532,11 @@ public class Player{
 
 	}
 
+	public void setName(String name){
+	    if(name != null)
+	        this.name = name;
+    }
+
 	public int getRoll() {
 		return roll;
 	}
