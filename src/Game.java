@@ -24,14 +24,10 @@ public class Game extends JFrame implements Display{
     private int playerID, playerCount;
     private Suggestion solution;
     private Board board;
-    private List<Card> cards;
     private List<Weapon> weapons, allWeapons;
     private List<PCharacter> characters, allCharacters;
     private List<Room> rooms;
-    private boolean finished;
-    private JPanel p;
     private Cell[][] cells;
-    private GUI gui;
     JMenuBar menuBar;
     JMenu help, settings;
     JMenuItem exit, restart;
@@ -43,7 +39,7 @@ public class Game extends JFrame implements Display{
         
         // Initialize board and GUI
         board = new Board(this);
-        gui = new GUI(board,this);
+        new GUI(board,this);
 
         cells = new Cell[24][25];
         playerID = 0;
@@ -116,7 +112,6 @@ public class Game extends JFrame implements Display{
             spawn.setWeapon(weapons.get(i));
         }
 
-        System.out.println(board.toString());
         int p = 0;
         while (true) {
             while (p < playerCount) {
@@ -137,7 +132,7 @@ public class Game extends JFrame implements Display{
      *
      */
     public boolean checkSuggestionRefute(Player prosecutor, Suggestion s) {
-        System.out.println("Checking refute");
+        displayMessage("Checking refute");
         for (Player p : players) {
             if (p != prosecutor && p.canRefuteSuggestion(s))
                 return false;
@@ -147,7 +142,7 @@ public class Game extends JFrame implements Display{
     }
 
     public boolean checkAccusationRefute(Player prosecutor, Accusation s) {
-        System.out.println("Checking refute");
+        displayMessage("Checking refutes...");
         for (Player p : players) {
             if (p != prosecutor && p.canRefuteAccusation(s))
                 return false;
@@ -159,7 +154,6 @@ public class Game extends JFrame implements Display{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        finished = true;
         System.exit(0);
         return true;
     }

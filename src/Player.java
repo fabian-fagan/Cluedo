@@ -24,8 +24,6 @@ public class Player{
 	private Game game; 
 	private int roll = 0;
 	private int moves = 0;
-	private BufferedImage image;
-	private BufferedImage image2;
 
 	public Player(String name, int pID, Game game) {
 		this.name = name;
@@ -141,7 +139,7 @@ public class Player{
 				makeSuggestion();
 			}
 		}
-
+     sc.close();
 	}
 
 	/**
@@ -193,7 +191,6 @@ public class Player{
 		}
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString());
 		if (out) {
 			this.roll = this.roll + 1;
 		
@@ -232,7 +229,6 @@ public class Player{
 		}
 		board.setCells(cells);
 		game.setBoard(board); // set new board
-		System.out.println(board.toString());
 		if (out) {
 			this.roll = this.roll + 1;
 		
@@ -460,15 +456,15 @@ public class Player{
 	 */
 	public boolean canRefuteSuggestion(Suggestion s) {
 		if (hand.contains(s.getCharacter())) {
-			System.out.println(name + " has " + s.getCharacter().getName());
+			displayMessage(name + " has " + s.getCharacter().getName());
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			System.out.println(name + " has " + s.getWeapon().getName());
+			displayMessage(name + " has " + s.getWeapon().getName());
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			System.out.println(name + " has " + s.getRoom().getName());
+			displayMessage(name + " has " + s.getRoom().getName());
 			return true;
 		}
 		return false;
@@ -480,18 +476,18 @@ public class Player{
 	 */
 	public boolean canRefuteAccusation(Accusation s) {
 		if (hand.contains(s.getCharacter())) {
-			System.out.println(name + " has " + s.getCharacter().getName());
-			System.out.println("You have been removed from the game!");
+			displayMessage(name + " has " + s.getCharacter().getName());
+			displayMessage("You have been removed from the game!");
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			System.out.println(name + " has " + s.getWeapon().getName());
-			System.out.println("You have been removed from the game!");
+			displayMessage(name + " has " + s.getWeapon().getName());
+			displayMessage("You have been removed from the game!");
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			System.out.println(name + " has " + s.getRoom().getName());
-			System.out.println("You have been removed from the game!");
+			displayMessage(name + " has " + s.getRoom().getName());
+			displayMessage("You have been removed from the game!");
 			return true;
 		}
 		return false;
@@ -509,6 +505,10 @@ public class Player{
 	public int getRoll() {
 		return roll;
 	}
+	
+	    public void displayMessage(String message) {
+	        JOptionPane.showMessageDialog(null, message);
+	    }
 	
 	
 

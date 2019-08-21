@@ -175,6 +175,7 @@ public class Board extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	protected void paintComponent(Graphics g) {
@@ -184,11 +185,10 @@ public class Board extends JPanel {
 		cellHeight = (getHeight() - 200) / boardHeight;
 		paintBoard(g);
 
- 
 	}
 
 	private void paintBoard(Graphics g) {
-		//paints cells
+		// paints cells
 		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++) {
 			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++) {
 				this.cells.get(y).get(x).draw(g, x * cellWidth, y * cellHeight, cellWidth, cellHeight); // draw cell
@@ -199,8 +199,11 @@ public class Board extends JPanel {
 
 			}
 		}
-		//paints dice depending on current players roll
-		int roll = game.getCurrentPlayer().getRoll();
+		// paints dice depending on current players roll
+		int roll = 0;
+		if (game.getCurrentPlayer() != null) {
+			roll = game.getCurrentPlayer().getRoll();
+		}
 		if (roll == 2) {
 			try {
 				image = ImageIO.read(new File("dice1.png"));
@@ -357,7 +360,7 @@ public class Board extends JPanel {
 		}
 
 	}
-	
+
 	public void redraw() {
 		repaint();
 
@@ -401,6 +404,15 @@ public class Board extends JPanel {
 	/**
 	 * @return
 	 */
+
+	public int getCellWidth() {
+		return cellWidth;
+	}
+
+	public int getCellHeight() {
+		return cellHeight;
+	}
+
 	public List<List<Cell>> getCells() {
 		return cells;
 	}
@@ -411,7 +423,5 @@ public class Board extends JPanel {
 	public void setCells(List<List<Cell>> c) {
 		this.cells = c;
 	}
-	
-
 
 }
