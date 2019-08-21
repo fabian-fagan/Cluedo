@@ -204,6 +204,14 @@ public class Board extends JPanel {
 		if (game.getCurrentPlayer() != null) {
 			roll = game.getCurrentPlayer().getRoll();
 		}
+		if (roll == 1) {
+			try {
+				image = ImageIO.read(new File("dice1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+		}
 		if (roll == 2) {
 			try {
 				image = ImageIO.read(new File("dice1.png"));

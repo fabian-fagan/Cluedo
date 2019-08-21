@@ -4,6 +4,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,27 +66,59 @@ public class GUI extends JFrame implements Display {
 				System.exit(0);
 			}
 		});
+		
+		//buttons
 		JButton showHand = new JButton("Show Hand");
 		showHand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				displayMessage(g.getCurrentPlayer().printHand());
 			}
 		});
-		menuBar.add(showHand);
+		showHand.addMouseListener(new MouseAdapter() { //changes color of button when hovered over
+	         Color oldcolor = showHand.getForeground();
+	         public void mouseEntered(MouseEvent m) {
+	            oldcolor = showHand.getForeground();
+	            showHand.setForeground(Color.blue);
+	         }
+	         public void mouseExited(MouseEvent m) {
+	            showHand.setForeground(oldcolor);
+	         }
+	      });
 		JButton makeSuggestion = new JButton("Suggest");
 		makeSuggestion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				g.getCurrentPlayer().makeSuggestion();
 			}
 		});
+		makeSuggestion.addMouseListener(new MouseAdapter() { //changes color of button when hovered over
+	         Color oldcolor = makeSuggestion.getForeground();
+	         public void mouseEntered(MouseEvent m) {
+	            oldcolor = makeSuggestion.getForeground();
+	            makeSuggestion.setForeground(Color.yellow);
+	         }
+	         public void mouseExited(MouseEvent m) {
+	        	 makeSuggestion.setForeground(oldcolor);
+	         }
+	      });
 		JButton makeAccusation = new JButton("Accuse");
 		makeAccusation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				g.getCurrentPlayer().makeAccusation();
 			}
 		});
-		menuBar.add(makeSuggestion);
+		makeAccusation.addMouseListener(new MouseAdapter() { //changes color of button when hovered over
+	         Color oldcolor = makeAccusation.getForeground();
+	         public void mouseEntered(MouseEvent m) {
+	            oldcolor = makeAccusation.getForeground();
+	            makeAccusation.setForeground(Color.red);
+	         }
+	         public void mouseExited(MouseEvent m) {
+	        	 makeAccusation.setForeground(oldcolor);
+	         }
+	      });
+		menuBar.add(makeSuggestion); //add buttons
 		menuBar.add(makeAccusation);
+		menuBar.add(showHand);
 		getContentPane().add(board, BorderLayout.CENTER);
 		MouseListener m = new MouseListener(board,game);
 		addMouseListener(m);
