@@ -5,7 +5,7 @@ import java.util.Random;
  *
  */
 public class Dice {
-	private final int MAX = 12; // maximum face value of two 6 sided dice
+	private final int MAX = 6; // maximum face value of two 6 sided dice
 	private int roll;
 	
 	public Dice() {
@@ -18,7 +18,9 @@ public class Dice {
 	 */
 	
 	public int roll() {
-		roll = (int)(Math.random() * MAX) + 1; //add one because 0 index
+		int roll1 = (int)(Math.random() * MAX) + 1; //add one because 0 index
+		int roll2 = (int)(Math.random() * MAX) + 1; //add one because 0 index
+		roll = roll1 + roll2;
 		return roll;
 	}
 	

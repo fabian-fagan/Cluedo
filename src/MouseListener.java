@@ -20,7 +20,7 @@ public class MouseListener extends MouseAdapter {
 
 	}
 
-    	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {
 		Player p;
 		Cell pCell;
 		p = game.getCurrentPlayer();
@@ -31,7 +31,7 @@ public class MouseListener extends MouseAdapter {
 		int cellY = pCell.getY() / cellHeight;
 		int mouseX = e.getX() / cellWidth;
 		int mouseY = e.getY() / cellHeight - 3; // weird offset of 3 for the position of the mouse in relation to the
-												// cells y
+		// cells y
 		if (mouseX > cellX && mouseY == cellY) {
 			p.moveRight();
 			p.hasMoved();
@@ -45,4 +45,4 @@ public class MouseListener extends MouseAdapter {
 			p.moveUp();
 			p.hasMoved();
 
-}}}
+		}}}

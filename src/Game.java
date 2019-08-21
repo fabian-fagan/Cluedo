@@ -1,4 +1,4 @@
-import javax.swing.*; 
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 
@@ -36,7 +36,7 @@ public class Game extends JFrame implements Display{
     public int pl;
 
     private Game() {
-        
+
         // Initialize board and GUI
         board = new Board(this);
         new GUI(board,this);
@@ -117,13 +117,10 @@ public class Game extends JFrame implements Display{
             while (p < playerCount) {
                 currentPlayer = players.get(p);
                 displayMessage(currentPlayer.toString() + ", it's your turn!");
-                currentPlayer.newTurn();
-                p++;
+                currentPlayer.newTurn2();
+                p%=playerCount;
             }
-            p = 0;
-
         }
-
     }
 
     /*

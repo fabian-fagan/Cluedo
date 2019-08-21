@@ -94,6 +94,15 @@ public class GUI extends JFrame implements Display {
 
 	}
 
+	public boolean newTurn(Player p){
+		int r = 1;
+		while(r > 0){
+			r = p.getRoll();
+			displayMessage(String.valueOf(r));
+		}
+		return false;
+	}
+
 	@Override
 	public void showPlayerList(List<Player> players, Player currentPlayer) {
 
