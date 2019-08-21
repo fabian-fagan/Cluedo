@@ -204,10 +204,6 @@ public class Board extends JPanel {
 		if (roll == 2) {
 			try {
 				image = ImageIO.read(new File("dice1.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice1.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -218,10 +214,6 @@ public class Board extends JPanel {
 		if (roll == 3) {
 			try {
 				image = ImageIO.read(new File("dice1.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice2.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -232,10 +224,6 @@ public class Board extends JPanel {
 		if (roll == 4) {
 			try {
 				image = ImageIO.read(new File("dice2.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice2.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -246,10 +234,6 @@ public class Board extends JPanel {
 		if (roll == 5) {
 			try {
 				image = ImageIO.read(new File("dice3.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice2.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -260,10 +244,6 @@ public class Board extends JPanel {
 		if (roll == 6) {
 			try {
 				image = ImageIO.read(new File("dice3.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice3.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -274,10 +254,6 @@ public class Board extends JPanel {
 		if (roll == 7) {
 			try {
 				image = ImageIO.read(new File("dice4.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice3.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -288,10 +264,6 @@ public class Board extends JPanel {
 		if (roll == 8) {
 			try {
 				image = ImageIO.read(new File("dice4.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice4.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -302,10 +274,6 @@ public class Board extends JPanel {
 		if (roll == 9) {
 			try {
 				image = ImageIO.read(new File("dice5.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice4.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -316,10 +284,6 @@ public class Board extends JPanel {
 		if (roll == 10) {
 			try {
 				image = ImageIO.read(new File("dice5.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice5.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -330,10 +294,6 @@ public class Board extends JPanel {
 		if (roll == 11) {
 			try {
 				image = ImageIO.read(new File("dice6.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice5.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -344,10 +304,6 @@ public class Board extends JPanel {
 		if (roll == 12) {
 			try {
 				image = ImageIO.read(new File("dice6.png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			try {
 				image2 = ImageIO.read(new File("dice6.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -355,12 +311,10 @@ public class Board extends JPanel {
 			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
 			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
 		}
-
 	}
 	
 	public void redraw() {
 		repaint();
-
 	}
 
 	private void addToRoom(Cell c, String name) {
@@ -403,6 +357,14 @@ public class Board extends JPanel {
 	 */
 	public List<List<Cell>> getCells() {
 		return cells;
+	}
+
+	public int getCellWidth(){
+		return cellWidth;
+	}
+
+	public int getCellHeight(){
+		return cellHeight;
 	}
 
 	/**

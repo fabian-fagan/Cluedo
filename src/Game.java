@@ -39,7 +39,7 @@ public class Game extends JFrame implements Display{
     JCheckBoxMenuItem cbMenuItem;
     public int pl;
 
-    private Game() throws IOException {
+    private Game() {
         
         // Initialize board and GUI
         board = new Board(this);
@@ -200,11 +200,7 @@ public class Game extends JFrame implements Display{
     }
 
     public static void main(String[] args) {
-        try {
-            new Game();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        new Game();
     }
 
 
