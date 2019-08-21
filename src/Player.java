@@ -84,6 +84,7 @@ public class Player{
 
 		Dice dice = new Dice();
 		this.roll = dice.roll();
+		if (this.roll == 1) {this.roll = 2;} //cannot roll 1 with 2 dice
         game.getBoard().redraw();
 
 		Scanner sc = new Scanner(System.in);

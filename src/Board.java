@@ -188,7 +188,7 @@ public class Board extends JPanel {
 	}
 
 	private void paintBoard(Graphics g) {
-
+		//paints cells
 		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++) {
 			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++) {
 				this.cells.get(y).get(x).draw(g, x * cellWidth, y * cellHeight, cellWidth, cellHeight); // draw cell
@@ -199,12 +199,165 @@ public class Board extends JPanel {
 
 			}
 		}
+		//paints dice depending on current players roll
+		int roll = game.getCurrentPlayer().getRoll();
+		if (roll == 2) {
+			try {
+				image = ImageIO.read(new File("dice1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 3) {
+			try {
+				image = ImageIO.read(new File("dice1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice2.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 4) {
+			try {
+				image = ImageIO.read(new File("dice2.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice2.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 5) {
+			try {
+				image = ImageIO.read(new File("dice3.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice2.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 6) {
+			try {
+				image = ImageIO.read(new File("dice3.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice3.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 7) {
+			try {
+				image = ImageIO.read(new File("dice4.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice3.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 8) {
+			try {
+				image = ImageIO.read(new File("dice4.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice4.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 9) {
+			try {
+				image = ImageIO.read(new File("dice5.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice4.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 10) {
+			try {
+				image = ImageIO.read(new File("dice5.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice5.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 11) {
+			try {
+				image = ImageIO.read(new File("dice6.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice5.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
+		if (roll == 12) {
+			try {
+				image = ImageIO.read(new File("dice6.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				image2 = ImageIO.read(new File("dice6.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
+			g.drawImage(image2, 140, 500, 100, 100, new ImagePanel());
+		}
 
 	}
 	
-	
-	
-
 	public void redraw() {
 		repaint();
 
