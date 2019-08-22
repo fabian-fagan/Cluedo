@@ -59,7 +59,6 @@ public class Game extends JFrame implements Display{
         Collections.shuffle(characters);
 
         solution = new Suggestion(weapons.remove(0), characters.remove(0), rooms.remove(0));
-        displayMessage("Solution: " + solution.toString()); // debug purposes
         List<Card> cardsLeft = new ArrayList<Card>();
         cardsLeft.addAll(weapons);
         cardsLeft.addAll(characters);
@@ -101,23 +100,22 @@ public class Game extends JFrame implements Display{
         nextPlayer();
     }
 
-    public void nextPlayer()
-    {
-        if(!areAllEliminated())
-        {
-            do
-            {
+    public void nextPlayer() {
+        if(!areAllEliminated()) {
+            do {
                 currentPlayer = players.get(cp);
-                showPlayerList(players, currentPlayer);
-                currentPlayer.newTurn();
+                if(!currentPlayer.isEliminated()) {
+                    showPlayerList(players, currentPlayer);
+                    currentPlayer.newTurn();
+                }
                 cp = (cp+1) % playerCount;
             }
             while(this.getCurrentPlayer().isEliminated());
-
         }
-        else
-        {
+        else {
             this.displayMessage("All players have been eliminated");
+            displayMessage("The murderer was " + solution.toString());
+            endGame();
         }
     }
 
@@ -149,20 +147,27 @@ public class Game extends JFrame implements Display{
     }
 
     public boolean checkAccusationRefute(Player prosecutor, Accusation s) {
-        displayMessage("Checking refutes...");
         for (Player p : players) {
-            if (p != prosecutor && p.canRefuteAccusation(s))
+            if (p != prosecutor && p.canRefuteAccusation(s)) {
+                displayMessage(prosecutor.getPrefferedName() + " has been removed from the game!");
+                prosecutor.eliminate();
+                nextPlayer();
                 return false;
+            }
         }
         displayMessage("No one can refute"); // does not check if they have guessed correctly yet
         displayMessage("You win!!");
+        endGame();
+        return true;
+    }
+
+    private void endGame(){
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.exit(0);
-        return true;
     }
 
     public Board getBoard() {
@@ -220,7 +225,8 @@ public class Game extends JFrame implements Display{
     public void showPlayerList(List<Player> players, Player currentPlayer) {
         String toPrint = "Current Player: " + currentPlayer.getPrefferedName() + '\n';
         for (int i=0; i<players.size(); i++){
-            toPrint += (i+1) + ": " + players.get(i).getPrefferedName() + '\n';
+            if(!players.get(i).isEliminated())
+                toPrint += (i+1) + ": " + players.get(i).getPrefferedName() + '\n';
         }
         JOptionPane.showMessageDialog(null, toPrint);
     }

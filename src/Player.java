@@ -63,22 +63,9 @@ public class Player{
 	public void newTurn(){
 		Dice dice = new Dice();
 		this.roll = dice.roll();
+		moves = roll;
 		game.getBoard().redraw();
-		while(roll > 0) {
-			if(isEliminated) break;
-			if (inRoom()) {
-				int dialogButton = JOptionPane.YES_NO_CANCEL_OPTION;
-				int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to make a suggestion?", "", dialogButton);
-				if (dialogResult == JOptionPane.NO_OPTION) {
-					game.nextPlayer();
-					return;
-				}
-				if (dialogResult == JOptionPane.YES_OPTION) {
-					makeSuggestion();
-				}
-			}
-			return;
-		}
+
 		return;
 	}
 
@@ -351,15 +338,15 @@ public class Player{
 	 */
 	public boolean canRefuteSuggestion(Suggestion s) {
 		if (hand.contains(s.getCharacter())) {
-			game.displayMessage(name + " has " + s.getCharacter().getName());
+			game.displayMessage(this.getPrefferedName() + " has " + s.getCharacter().getName());
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			game.displayMessage(name + " has " + s.getWeapon().getName());
+			game.displayMessage(this.getPrefferedName() + " has " + s.getWeapon().getName());
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			game.displayMessage(name + " has " + s.getRoom().getName());
+			game.displayMessage(this.getPrefferedName() + " has " + s.getRoom().getName());
 			return true;
 		}
 		return false;
@@ -371,21 +358,15 @@ public class Player{
 	 */
 	public boolean canRefuteAccusation(Accusation s) {
 		if (hand.contains(s.getCharacter())) {
-			game.displayMessage(name + " has " + s.getCharacter().getName());
-			game.displayMessage("You have been removed from the game!");
-            eliminate();
+			game.displayMessage(this.getPrefferedName() + " has " + s.getCharacter().getName());
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			game.displayMessage(name + " has " + s.getWeapon().getName());
-			game.displayMessage("You have been removed from the game!");
-            eliminate();
+			game.displayMessage(this.getPrefferedName() + " has " + s.getWeapon().getName());
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			game.displayMessage(name + " has " + s.getRoom().getName());
-			game.displayMessage("You have been removed from the game!");
-			eliminate();
+			game.displayMessage(this.getPrefferedName() + " has " + s.getRoom().getName());
 			return true;
 		}
 		return false;
@@ -393,71 +374,82 @@ public class Player{
 
 	public void hasMoved() {
 		this.roll = this.roll - 1;
-		if(roll == 0){
+		if (inRoom()) {
+			int dialogButton = JOptionPane.YES_NO_CANCEL_OPTION;
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to make a suggestion?", "", dialogButton);
+			if (dialogResult == JOptionPane.NO_OPTION) {
+				game.nextPlayer();
+				return;
+			}
+			if (dialogResult == JOptionPane.YES_OPTION) {
+				makeSuggestion();
+			}
+		}
+		else if(roll == 0){
 			game.nextPlayer();
 		}
 	}
 
-    private void eliminate(){
-        isEliminated = true;
-    }
+	public void eliminate(){
+		isEliminated = true;
+	}
 
-    public boolean isEliminated(){
-        return isEliminated;
-    }
+	public boolean isEliminated(){
+		return isEliminated;
+	}
 
-    public String toString() {
-        return name;
-    }
+	public String toString() {
+		return name;
+	}
 
-    public char getPlayID() {
-        return (char) (playerID + 1 + '0');
-    }
+	public char getPlayID() {
+		return (char) (playerID + 1 + '0');
+	}
 
-    public char getInit() {
-        return name.charAt(0);
-    }
+	public char getInit() {
+		return name.charAt(0);
+	}
 
-    public String getRollString() { return String.valueOf(this.roll); }
+	public String getRollString() { return String.valueOf(this.roll); }
 
 	public String getName() {
 		return name;
 	}
 
 	public String getPrefferedName(){
-	    if(playerName == null)
-	        return name;
-	    else return playerName;
-    }
+		if(playerName == null)
+			return name;
+		else return playerName;
+	}
 
-    public Cell getPos() {
-        return pos;
-    }
+	public Cell getPos() {
+		return pos;
+	}
 
-    public void setPos(Cell pos) {
-        this.pos = pos;
-    }
+	public void setPos(Cell pos) {
+		this.pos = pos;
+	}
 
-    public String getColor(){
-	    return color;
-    }
+	public String getColor(){
+		return color;
+	}
 
-    public void setColor(String c){
-	    this.color = c;
-    }
+	public void setColor(String c){
+		this.color = c;
+	}
 
 	public void setName(String name){
-	    if(name != null)
-	        this.name = name;
-    }
+		if(name != null)
+			this.name = name;
+	}
 
-    public String getPlayerName(){
-	    return playerName;
-    }
+	public String getPlayerName(){
+		return playerName;
+	}
 
-    public void setPlayerName(String name){
-	    this.playerName = name;
-    }
+	public void setPlayerName(String name){
+		this.playerName = name;
+	}
 
 	public int getRoll() {
 		return roll;
