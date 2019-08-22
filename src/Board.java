@@ -21,11 +21,9 @@ import java.util.Scanner;
  */
 public class Board extends JPanel {
 	Map<Integer, Cell> playerSpawns = new HashMap<Integer, Cell>();
-
 	int spawnCount;
 	private Game game;
 	private List<List<Cell>> cells;
-	private List<Player> players;
 	private List<Cell> itemSpawn;
 	private Map<Room, List<Cell>> cellRoom;
 	private Map<Character, Room> roomMap;
@@ -79,7 +77,6 @@ public class Board extends JPanel {
 	public Board(Game game) {
 		this.game = game;
 		createBoard();
-		System.out.println(this.toString());
 	}
 
 	/**
@@ -164,7 +161,7 @@ public class Board extends JPanel {
 								itemSpawn.add(newCell);
 							break;
 						default:
-							System.out.println("Unknown Tile: " + token.charAt(0));
+							game.displayMessage("Unknown Tile: " + token.charAt(0));
 						}
 						boardRow.add(newCell);
 					}
@@ -175,12 +172,12 @@ public class Board extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+     
 	}
 
 	protected void paintComponent(Graphics g) {
+		requestFocus(true);
 		super.paintComponent(g);
-
 		cellWidth = getWidth() / boardWidth;
 		cellHeight = (getHeight() - 200) / boardHeight;
 		paintBoard(g);
@@ -189,13 +186,12 @@ public class Board extends JPanel {
 
 	private void paintBoard(Graphics g) {
 		// paints cells
+		requestFocus(true);
 		for (int x = 0; (x < boardWidth) && (x < cells.size() - 1); x++) {
 			for (int y = 0; (y < boardHeight) && (y < cells.size() - 1); y++) {
 				this.cells.get(y).get(x).draw(g, x * cellWidth, y * cellHeight, cellWidth, cellHeight); // draw cell
 				this.cells.get(y).get(x).setX(x * cellWidth);
 				this.cells.get(y).get(x).setY(y * cellHeight);
-
-				Cell c = this.cells.get(y).get(x);
 
 			}
 		}
@@ -203,6 +199,14 @@ public class Board extends JPanel {
 		int roll = 0;
 		if (game.getCurrentPlayer() != null) {
 			roll = game.getCurrentPlayer().getRoll();
+		}
+		if (roll == 1) {
+			try {
+				image = ImageIO.read(new File("dice1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			g.drawImage(image, 20, 500, 100, 100, new ImagePanel());
 		}
 		if (roll == 2) {
 			try {
@@ -328,10 +332,7 @@ public class Board extends JPanel {
 		}
 	}
 
-	/**
-	 * @param c
-	 * @return
-	 */
+
 	public Room getRoom(Cell c) {
 		char cname = c.getCellName();
 		return roomMap.get(cname);

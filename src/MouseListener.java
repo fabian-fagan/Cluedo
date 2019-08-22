@@ -2,10 +2,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+/**
+ * Mouse listener, controls movement of players through clicks 
+ *
+ */
 public class MouseListener extends MouseAdapter {
 	private Board board;
 	private Game game;
-	private Cell cell;
 
 	public MouseListener(Board b, Game g) {
 		this.board = b;
@@ -13,12 +16,6 @@ public class MouseListener extends MouseAdapter {
 
 	}
 
-	public MouseListener(Board b, Game g, Cell c) {
-		this.board = b;
-		this.game = g;
-		this.cell = c;
-
-	}
 
 	public void mouseClicked(MouseEvent e) {
 		Player p;

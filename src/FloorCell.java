@@ -1,30 +1,53 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 public class FloorCell extends Cell implements Drawable {
+	private BufferedImage image;
+	private boolean animating;
 
-    public FloorCell(char name, Board b) {
-        super(name, b);
-    }
+	public FloorCell(char name, Board b) {
+		super(name, b);
+	}
 
-    @Override
-    public void draw(Graphics g, int x, int y, int width, int height) {
-    	if (name == '-') {
+	/**
+	 * draws floor cells which can contain players
+	 */
+	@Override
+	public void draw(Graphics g, int x, int y, int width, int height) {
+		if (animating) {
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.black);
+			g.drawRect(x, y, width - 1, height - 1);
+			try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		animating = false;
+
+		if (name == '-') {
 			g.setColor(Color.BLACK);
 			g.fillRect(x, y, width, height);
-		} 
-    	
-    	
-    	else {
-    	g.setColor(Color.YELLOW);
-        g.fillRect(x, y, width, height);
-        g.setColor(Color.black);
-        g.drawRect(x, y, width-1, height-1);
+		}
 
-    	}
-    	
-    	if (getPlayer() != null) {
-    		Player p = getPlayer();
+		else {
+			g.setColor(Color.YELLOW);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.black);
+			g.drawRect(x, y, width - 1, height - 1);
+
+		}
+
+		if (getPlayer() != null) {
+			Player p = getPlayer();
 			if (p.getName().equals("Mrs. White")) {
 				g.setColor(Color.WHITE);
 				g.fillRect(x, y, width, height);
@@ -49,8 +72,20 @@ public class FloorCell extends Cell implements Drawable {
 				g.setColor(Color.PINK);
 				g.fillRect(x, y, width, height);
 			}
+			if (p.isEliminated()) { // crosses out eliminated players
+				try {
+					image = ImageIO.read(new File("cross.png"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				g.drawImage(image, x, y, width, height, new ImagePanel());
+			}
 
 		}
-    	
-    }
+
+	}
+
+	public void animate() {
+		animating = true;
+	}
 }

@@ -20,6 +20,7 @@ public class Cell {
 	static int height;
 	private int x, y;
 	private BufferedImage image;
+	private boolean animating = false;
 
 	/**
 	 * @param name
@@ -29,9 +30,6 @@ public class Cell {
 		super();
 		this.name = name;
 		this.board = b;
-		// hardcoding width and height for now
-		int width = 24;
-		int height = 25;
 	}
 
 	public Cell(Player pl, char name) {
@@ -45,7 +43,7 @@ public class Cell {
 	 * @return cell representation
 	 */
 	public char getCellName() {
-		return name; 
+		return name;
 	}
 
 	public char name() {
@@ -84,11 +82,18 @@ public class Cell {
 	}
 
 	/**
-	 * draw this cell on the given graphics pane
+	 * draw this cell on the given graphics pane, depending on its contents
 	 */
 	public void draw(Graphics g, int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
+		if (animating) {
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(x, y, width, height);
+			g.setColor(Color.black);
+			g.drawRect(x, y, width - 1, height - 1);
+		}
+		animating = false;
 		if (name == '=') {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(x, y, width, height);
@@ -126,6 +131,14 @@ public class Cell {
 			if (p.getName().equals("Col. Mustard")) {
 				g.setColor(Color.PINK);
 				g.fillRect(x, y, width, height);
+			}
+			if (p.isEliminated()) { // cross out player if they are eliminated
+				try {
+					image = ImageIO.read(new File("cross.png"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				g.drawImage(image, x, y, width, height, new ImagePanel());
 			}
 
 		}
@@ -189,7 +202,6 @@ public class Cell {
 
 			}
 
-
 		}
 	}
 
@@ -248,7 +260,7 @@ public class Cell {
 	public int getY() {
 		return this.y;
 	}
-	
+
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -257,10 +269,8 @@ public class Cell {
 		this.y = y;
 	}
 
-
-	
-
-	
-
+	public void animate() {
+		animating = true;
+	}
 
 }
