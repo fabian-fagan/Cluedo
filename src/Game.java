@@ -21,7 +21,7 @@ public class Game extends JFrame implements Display{
     /* =========== fields =========== */
     private List<Player> players;
     private Player currentPlayer;
-    private int playerID, playerCount;
+    private int playerID, playerCount, cp; //cp = currentplayer number
     private Suggestion solution;
     private Board board;
     private List<Weapon> weapons, allWeapons;
@@ -44,6 +44,7 @@ public class Game extends JFrame implements Display{
 
         cells = new Cell[24][25];
         playerID = 0;
+        cp = 0;
         /*
          * Initialize all weapon, PCharacter and room card lists Doing both individual
          * lists of weapon, PCharacter and room objects as well as a single list of all
@@ -63,21 +64,6 @@ public class Game extends JFrame implements Display{
         cardsLeft.addAll(weapons);
         cardsLeft.addAll(characters);
         cardsLeft.addAll(rooms);
-
-        /*while (playerCount < 3) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("How many players? (3-6)");
-            playerCount = sc.nextInt();
-            System.out.println("Amount of players chosen: " + playerCount);
-            board.redraw();
-        } */
-
-        String pString = "";
-        for(int i = 0; i<playerCount; i++){
-            pString = pString + "Player " + (i+1) + ": " + players.get(i).getName() + '\n';
-        }
-        displayMessage(pString);
-
 
         // Deal the cards
         Collections.shuffle(cardsLeft);
@@ -111,15 +97,40 @@ public class Game extends JFrame implements Display{
             spawn.setWeapon(weapons.get(i));
         }
 
-        int p = 0;
-        while (true) {
-            while (p < playerCount) {
-                currentPlayer = players.get(p);
-                displayMessage(currentPlayer.toString() + ", it's your turn!");
-                currentPlayer.newTurn2();
-                p%=playerCount;
+        currentPlayer = players.get(0);
+        nextPlayer();
+    }
+
+    public void nextPlayer()
+    {
+        if(!areAllEliminated())
+        {
+            do
+            {
+                currentPlayer = players.get(cp);
+                showPlayerList(players, currentPlayer);
+                currentPlayer.newTurn();
+                cp = (cp+1) % playerCount;
+            }
+            while(this.getCurrentPlayer().isEliminated());
+
+        }
+        else
+        {
+            this.displayMessage("All players have been eliminated");
+        }
+    }
+
+    private boolean areAllEliminated()
+    {
+        for(int a=0; a < players.size(); a++)
+        {
+            if(!players.get(a).isEliminated())
+            {
+                return false;
             }
         }
+        return true;
     }
 
     /*
@@ -205,10 +216,13 @@ public class Game extends JFrame implements Display{
         new Game();
     }
 
-
     @Override
     public void showPlayerList(List<Player> players, Player currentPlayer) {
-
+        String toPrint = "Current Player: " + currentPlayer.getPrefferedName() + '\n';
+        for (int i=0; i<players.size(); i++){
+            toPrint += (i+1) + ": " + players.get(i).getPrefferedName() + '\n';
+        }
+        JOptionPane.showMessageDialog(null, toPrint);
     }
 
     @Override

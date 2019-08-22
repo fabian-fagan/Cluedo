@@ -73,24 +73,34 @@ public class GUI extends JFrame implements Display {
 		JButton showHand = new JButton("Show Hand");
 		showHand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				displayMessage(g.getCurrentPlayer().printHand());
+				displayMessage(game.getCurrentPlayer().printHand());
 			}
 		});
 		menuBar.add(showHand);
 		JButton makeSuggestion = new JButton("Suggest");
 		makeSuggestion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				g.getCurrentPlayer().makeSuggestion();
+				game.getCurrentPlayer().makeSuggestion();
 			}
 		});
 		JButton makeAccusation = new JButton("Accuse");
 		makeAccusation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				g.getCurrentPlayer().makeAccusation();
+				game.getCurrentPlayer().makeAccusation();
 			}
 		});
 		menuBar.add(makeSuggestion);
 		menuBar.add(makeAccusation);
+		JTextField tf = new JTextField("Enter you name here");
+		tf.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String name = tf.getText();
+                Player currentPlayer = game.getCurrentPlayer();
+                currentPlayer.setPlayerName(name);
+            }
+        });
+		menuBar.add(tf);
 		getContentPane().add(board, BorderLayout.CENTER);
 		MouseListener m = new MouseListener(board,game);
 		addMouseListener(m);
@@ -99,15 +109,16 @@ public class GUI extends JFrame implements Display {
 		chooseNames();
 	}
 
+
 	private void askPlayers() {
 		String playerCount = JOptionPane.showInputDialog("How many players? (3-6)");
 		try {
 			int pCount = Integer.parseInt(playerCount);
 			if (pCount != 3 && pCount != 4 && pCount != 5 && pCount != 6)
 				askPlayers();
-			game.setPlayerCount(pCount);
+			else game.setPlayerCount(pCount);
 		} catch (java.lang.NumberFormatException e){
-			game.displayMessage("Please enter a number in between 3 and 6 inclusive");
+			displayMessage("Please enter a number from 3 to 6");
 			askPlayers();
 		}
 	}
@@ -139,39 +150,46 @@ public class GUI extends JFrame implements Display {
 					"Player " + (i+1) + ", choose your character", JOptionPane.DEFAULT_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, null, null);
 			String n = null;
-
+			String color = null;
 			if(white.isSelected()) {
+			    color = "White";
 				n = "Mrs. White";
 				panel.remove(white);
 			}
 			else if(plum.isSelected()) {
+			    color = "Cyan";
 				n = "Prof. Plum";
 				panel.remove(plum);
 			}
 			else if(scarlet.isSelected()) {
+			    color = "Red";
 				n = "Miss Scarlett";
 				panel.remove(scarlet);
 			}
 			else if(green.isSelected()) {
+			    color = "Green";
 				n = "Mr. Green";
 				panel.remove(green);
 			}
 			else if(peacock.isSelected()) {
+			    color = "Blue";
 				n = "Mrs. Peacock";
 				panel.remove(peacock);
 			}
 			else if(mustard.isSelected()) {
+			    color = "Pink";
 				n = "Col. Mustard";
 				panel.remove(mustard);
 			}
 			game.addPlayer(new Player(n, i, game));
+			game.getPlayers().get(i).setColor(color);
 
 		}
 	}
 
 
 
-	public void closeWindow(){
+	private void closeWindow(){
 		int dialogButton = JOptionPane.YES_NO_OPTION;
 		int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit", dialogButton);
 
@@ -183,7 +201,11 @@ public class GUI extends JFrame implements Display {
 
 	@Override
 	public void showPlayerList(List<Player> players, Player currentPlayer) {
-
+        String toPrint = "Current Player: " + currentPlayer.getPrefferedName() + '\n';
+        for (int i=0; i<players.size(); i++){
+            toPrint += (i+1) + ": " + players.get(i).getPrefferedName() + '\n';
+        }
+        JOptionPane.showMessageDialog(null, toPrint);
 	}
 
 	@Override

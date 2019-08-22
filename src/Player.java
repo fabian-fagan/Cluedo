@@ -14,6 +14,8 @@ import java.util.Scanner;
 
 public class Player{
 	private String name;
+	private String playerName;
+	private String color;
 	/**
 	 * Player class, contains information on their hand, position and ID as well as
 	 * controls movement on the board.
@@ -24,36 +26,14 @@ public class Player{
 	private Game game;
 	private int roll = 0;
 	private int moves = 0;
-	private boolean isTurn;
+	private boolean isEliminated = false;
 
 	public Player(String name, int pID, Game game) {
 		this.name = name;
 		this.playerID = pID;
 		this.game = game;
-		this.hand = new ArrayList<Card>();
+		this.hand = new ArrayList<>();
 	}
-
-	public Cell getPos() {
-		return pos;
-	}
-
-	public void setPos(Cell pos) {
-		this.pos = pos;
-	}
-
-	public String toString() {
-		return name;
-	}
-
-	public char getPlayID() {
-		return (char) (playerID + 1 + '0');
-	}
-
-	public char getInit() {
-		return name.charAt(0);
-	}
-
-	public String getRollString() { return String.valueOf(this.roll); }
 
 	public void addToHand(Card c) {
 		if (c != null)
@@ -79,107 +59,36 @@ public class Player{
 	 * as whether they want to make a suggestion/accusation. Loops equivalent to the
 	 * roll number that the player receives.
 	 */
-	public void newTurn() {
 
+	public void newTurn(){
 		Dice dice = new Dice();
 		this.roll = dice.roll();
 		game.getBoard().redraw();
-
-		Scanner sc = new Scanner(System.in);
-		for (int i = 0; i < roll; i++) {
-			if (inRoom()) {
-				System.out.println(name + ": " + (roll - i)
-						+ " moves (W - Up, A - Left, S - Down, D - Right) or make a suggestion! (M)");
-			} else
-				System.out.println(name + ": " + (roll - i)
-						+ " moves (W - Up, A - Left, S - Down, D - Right) or make an accusation! (K)");
-
-			String input = sc.next();
-			if (input.equalsIgnoreCase("W")) {
-				moveUp();
-			}
-
-			if (input.equalsIgnoreCase("A")) {
-				moveLeft();
-			}
-
-			if (input.equalsIgnoreCase("S")) {
-				moveDown();
-			}
-
-			if (input.equalsIgnoreCase("D")) {
-				moveRight();
-			}
-
-			if (input.equalsIgnoreCase("K")) {
-				makeAccusation();
-
-			}
-			if (input.equalsIgnoreCase("M")) {
-				if (inRoom()) {
-					makeSuggestion();
-					i = roll; // end turn
-				} else
-					System.out.println("You are not in a room ");
-			}
-			if (input.equalsIgnoreCase("E")) { // end turn
-				i = roll;
-			}
-			if (input.equalsIgnoreCase("H")) { // print hand
-				System.out.println(printHand());
-			}
-			if (moves == roll) {
-				i = roll;
-			}
-
-		}
-		if (inRoom()) {
-			System.out.println("Would you like to make a suggestion? (Y/N)");
-			if (sc.next().equalsIgnoreCase("Y")) {
-				makeSuggestion();
-			}
-		}
-		sc.close();
-	}
-
-	/*
-	this doesnt work yet
-	 */
-
-	public void newTurn2(){
-		Dice dice = new Dice();
-		this.roll = dice.roll();
-		game.getBoard().redraw();
-
-		isTurn = true;
-		while(true) {
-			if(!isTurn) break;
+		while(roll > 0) {
+			if(isEliminated) break;
 			if (inRoom()) {
 				int dialogButton = JOptionPane.YES_NO_CANCEL_OPTION;
 				int dialogResult = JOptionPane.showConfirmDialog(null, "Would you like to make a suggestion?", "", dialogButton);
 				if (dialogResult == JOptionPane.NO_OPTION) {
-					isTurn = false;
+					game.nextPlayer();
+					return;
 				}
 				if (dialogResult == JOptionPane.YES_OPTION) {
 					makeSuggestion();
 				}
 			}
+			return;
 		}
+		return;
 	}
 
 
 	/**
 	 * @return boolean true if in room
 	 */
-	public boolean inRoom() {
+	private boolean inRoom() {
 		char posName = pos.getCellName();
-		if (posName == '#')
-			return false;
-		if (posName == '!')
-			return false;
-		if (posName == '-')
-			return false;
-		if (posName == 'P')
+		if (posName == '#' || posName == '!' || posName == '-' || posName == 'P')
 			return false;
 		else
 			return true;
@@ -378,6 +287,7 @@ public class Player{
 			if (dialogResult == JOptionPane.YES_OPTION) {
 				Suggestion s = new Suggestion(murderer, weapon, pos.getRoom());
 				game.checkSuggestionRefute(this, s);
+				game.nextPlayer();
 			}
 		} else {
 			game.displayMessage("You are not in a room");
@@ -433,47 +343,6 @@ public class Player{
 			game.checkAccusationRefute(this, a);
 		}
 		return false;
-
-
-
-
-
-
-
-
-
-		/**Scanner sc = new Scanner(System.in);
-		 System.out.println("Who are you accusing of murder? Enter the number");
-		 List<PCharacter> chars = Board.characters;
-		 for (int i = 0; i < chars.size(); i++) {
-		 System.out.println(i + ": " + chars.get(i).getName());
-		 }
-		 int m = sc.nextInt();
-		 System.out.println("What did the murderer use?");
-		 List<Weapon> weapons = Board.weapons;
-		 for (int i = 0; i < weapons.size(); i++) {
-		 System.out.println(i + ": " + weapons.get(i).getName());
-		 }
-		 int n = sc.nextInt();
-		 System.out.println("What room did the murder take place in?");
-		 List<Room> rooms = Board.rooms;
-		 for (int i = 0; i < rooms.size(); i++) {
-		 System.out.println(i + ": " + rooms.get(i).getName());
-		 }
-		 int w = sc.nextInt();
-		 PCharacter murderer = chars.get(m);
-		 Weapon murderWeapon = weapons.get(n);
-		 Room murderRoom = rooms.get(w);
-		 System.out.println("You chose: " + murderer.getName() + " with " + murderWeapon.getName() + " in the "
-		 + murderRoom.getName() + ", correct? (Y/N)");
-		 String next = sc.next();
-		 if (next.equalsIgnoreCase("N"))
-		 return makeAccusation();
-		 if (next.equalsIgnoreCase("Y")) {
-		 Accusation s = new Accusation(murderer, murderWeapon, pos.getRoom());
-		 game.checkAccusationRefute(this, s);
-		 }
-		 return false; */
 	}
 
 	/**
@@ -482,15 +351,15 @@ public class Player{
 	 */
 	public boolean canRefuteSuggestion(Suggestion s) {
 		if (hand.contains(s.getCharacter())) {
-			displayMessage(name + " has " + s.getCharacter().getName());
+			game.displayMessage(name + " has " + s.getCharacter().getName());
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			displayMessage(name + " has " + s.getWeapon().getName());
+			game.displayMessage(name + " has " + s.getWeapon().getName());
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			displayMessage(name + " has " + s.getRoom().getName());
+			game.displayMessage(name + " has " + s.getRoom().getName());
 			return true;
 		}
 		return false;
@@ -502,18 +371,21 @@ public class Player{
 	 */
 	public boolean canRefuteAccusation(Accusation s) {
 		if (hand.contains(s.getCharacter())) {
-			displayMessage(name + " has " + s.getCharacter().getName());
-			displayMessage("You have been removed from the game!");
+			game.displayMessage(name + " has " + s.getCharacter().getName());
+			game.displayMessage("You have been removed from the game!");
+            eliminate();
 			return true;
 		}
 		if (hand.contains(s.getWeapon())) {
-			displayMessage(name + " has " + s.getWeapon().getName());
-			displayMessage("You have been removed from the game!");
+			game.displayMessage(name + " has " + s.getWeapon().getName());
+			game.displayMessage("You have been removed from the game!");
+            eliminate();
 			return true;
 		}
 		if (hand.contains(s.getRoom())) {
-			displayMessage(name + " has " + s.getRoom().getName());
-			displayMessage("You have been removed from the game!");
+			game.displayMessage(name + " has " + s.getRoom().getName());
+			game.displayMessage("You have been removed from the game!");
+			eliminate();
 			return true;
 		}
 		return false;
@@ -522,27 +394,73 @@ public class Player{
 	public void hasMoved() {
 		this.roll = this.roll - 1;
 		if(roll == 0){
-			isTurn = false;
-			game.displayMessage("Roll = 0");
+			game.nextPlayer();
 		}
 	}
 
+    private void eliminate(){
+        isEliminated = true;
+    }
+
+    public boolean isEliminated(){
+        return isEliminated;
+    }
+
+    public String toString() {
+        return name;
+    }
+
+    public char getPlayID() {
+        return (char) (playerID + 1 + '0');
+    }
+
+    public char getInit() {
+        return name.charAt(0);
+    }
+
+    public String getRollString() { return String.valueOf(this.roll); }
+
 	public String getName() {
 		return name;
-
 	}
+
+	public String getPrefferedName(){
+	    if(playerName == null)
+	        return name;
+	    else return playerName;
+    }
+
+    public Cell getPos() {
+        return pos;
+    }
+
+    public void setPos(Cell pos) {
+        this.pos = pos;
+    }
+
+    public String getColor(){
+	    return color;
+    }
+
+    public void setColor(String c){
+	    this.color = c;
+    }
 
 	public void setName(String name){
 	    if(name != null)
 	        this.name = name;
     }
 
+    public String getPlayerName(){
+	    return playerName;
+    }
+
+    public void setPlayerName(String name){
+	    this.playerName = name;
+    }
+
 	public int getRoll() {
 		return roll;
-	}
-
-	public void displayMessage(String message) {
-		JOptionPane.showMessageDialog(null, message);
 	}
 
 
